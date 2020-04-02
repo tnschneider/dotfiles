@@ -1,0 +1,36 @@
+[user]
+	name = Terry Schneider
+	email = tschneider@firebend.com
+
+[alias]
+	st = status
+	co = checkout
+	cop = "!z() { git checkout $1 && git pull; }; z"
+	cb = checkout -b
+	ac = "!z() { git add -A && git commit --message=\"$*\"; }; z"
+	bl = branch -l
+	po = !git push -u origin $(git rev-parse --abbrev-ref HEAD)
+	delete-branch = branch -D
+	lt = !git tag | tail -1
+	md = "!z() { curr=$(git rev-parse --abbrev-ref HEAD) && git co develop && git pull && git co $curr && git merge develop; }; z"
+	cleanup = !git remote prune origin && git gc
+	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
+	pr = !git fetch && git diff origin/develop
+
+[core]
+	autocrlf = input
+[credential]
+	helper = wincred
+[merge]
+	tool = bc
+[diff]
+	tool = bc
+[difftool "bc"]
+	path = c:/Program Files/Beyond Compare 4/bcomp.exe 
+	prompt = false
+[mergetool]
+	trustExitCode = true
+	prompt = false
+	keepBackup = false
+[mergetool "bc"]
+	path = c:/Program Files/Beyond Compare 4/bcomp.exe
