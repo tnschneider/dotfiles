@@ -48,3 +48,12 @@ aks-prod-west() {
 aks-qa() {
 	az aks get-credentials --resource-group aks-qa --name aks-k8s-qa-central
 }
+
+aks-help() {
+	echo "kubectl get po
+kubectl delete po <pod_name>
+kubectl logs <pod_name>
+kubectl logs <pod_name> -f
+kubectl logs <pod_name> | grep \"<search_term>\"
+kubectl top pods"
+}
