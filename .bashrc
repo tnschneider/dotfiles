@@ -37,16 +37,25 @@ aks-login() {
 	az login && az account set --subscription "firebend-mca"
 }
 
-aks-prod-east() {
-	az aks get-credentials --resource-group aks-prod --name aks-k8s-prod-east
-}
+aks() {
+	env=$1
+	if 	 [ $env == 'qa'   ]; then rg='aks-qa';   cluster='aks-k8s-qa-central';
+	elif [ $env == 'west' ]; then rg='aks-prod'; cluster='aks-k8s-prod-west';
+	elif [ $env == 'east' ]; then rg='aks-prod'; cluster='aks-k8s-prod-east';
+	else echo 'invalid environment'; return 0; fi
 
-aks-prod-west() {
-	az aks get-credentials --resource-group aks-prod --name aks-k8s-prod-west
-}
+	exec 7>&2 2>/dev/null && trap 'kill $(jobs -p) && exec 2>&7 7>&- && rm $fifoname && trap - SIGINT' SIGINT
 
-aks-qa() {
-	az aks get-credentials --resource-group aks-qa --name aks-k8s-qa-central
+	fifoname="/tmp/pipe_$RANDOM" && mkfifo $fifoname
+	
+	start "https://microsoft.com/devicelogin"
+
+	head -n 1 $fifoname | sed -r 's/.*the code (.*) to.*/\1/' > /dev/clipboard 2>&1 & pid1=$!
+	az aks get-credentials --overwrite-existing --resource-group $rg --name $cluster &> /dev/null && kubectl get po 2> $fifoname & pid2=$!
+
+	wait $pid1 && echo "*** CODE IS COPIED TO THE CLIPBOARD ***" && wait $pid2
+	
+	exec 2>&7 7>&- && rm $fifoname && trap - SIGINT
 }
 
 aks-help() {
