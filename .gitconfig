@@ -16,6 +16,7 @@
 	cleanup = !git remote prune origin && git gc
 	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
 	pr = !git fetch && git diff origin/develop
+	dev = checkout develop
 
 [core]
 	autocrlf = input

@@ -3,6 +3,7 @@ repo() {
 }
 
 alias c="clear"
+alias qemu="qemu-system-x86_64"
 
 zg() {
 	filename=$(basename -- "$1")
