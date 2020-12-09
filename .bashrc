@@ -40,9 +40,9 @@ aks-login() {
 
 aks() {
 	env=$1
-	if 	 [ $env == 'qa'   ]; then rg='aks-qa';   cluster='aks-k8s-qa-central';
-	elif [ $env == 'west' ]; then rg='aks-prod'; cluster='aks-k8s-prod-west';
-	elif [ $env == 'east' ]; then rg='aks-prod'; cluster='aks-k8s-prod-east';
+	if 	 [ $env == 'qa'   ]; then rg='aks-qa';   cluster='qa-central';
+	elif [ $env == 'west' ]; then rg='aks-prod'; cluster='prod-west';
+	elif [ $env == 'east' ]; then rg='aks-prod'; cluster='prod-east';
 	else echo 'invalid environment'; return 0; fi
 
 	exec 7>&2 2>/dev/null && trap 'kill $(jobs -p) && exec 2>&7 7>&- && rm $fifoname && trap - SIGINT' SIGINT
