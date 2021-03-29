@@ -20,8 +20,6 @@
 
 [core]
 	autocrlf = input
-[credential]
-	helper = wincred
 [merge]
 	tool = bc
 [diff]
@@ -35,3 +33,5 @@
 	keepBackup = false
 [mergetool "bc"]
 	path = c:/Program Files/Beyond Compare 4/bcomp.exe
+[credential]
+	helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
