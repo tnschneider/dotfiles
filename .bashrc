@@ -192,3 +192,5 @@ kubectl logs <pod_name> -f
 kubectl logs <pod_name> | grep \"<search_term>\"
 kubectl top pods"
 }
+
+eval "$(starship init bash)"
