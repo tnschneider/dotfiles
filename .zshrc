@@ -89,3 +89,5 @@ then
 fi
 
 eval "$(starship init zsh)"
+
+test -f ~/.zsh_custom && source ~/.zsh_custom
