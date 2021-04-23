@@ -7,6 +7,8 @@ bindkey -e
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/tnsch/.zshrc'
 
+fpath=(~/.zsh $fpath)
+
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall

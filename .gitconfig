@@ -5,33 +5,30 @@
 [alias]
 	st = status
 	co = checkout
-	cop = "!z() { git checkout $1 && git pull; }; z"
 	cb = checkout -b
-	ac = "!z() { git add -A && git commit --message=\"$*\"; }; z"
 	bl = branch -l
+	ac = "!z() { git add -A && git commit --message=\"$*\"; }; z"
 	po = !git push -u origin $(git rev-parse --abbrev-ref HEAD)
-	delete-branch = branch -D
-	lt = !git tag | tail -1
-	md = "!z() { curr=$(git rev-parse --abbrev-ref HEAD) && git co develop && git pull && git co $curr && git merge develop; }; z"
-	cleanup = !git remote prune origin && git gc
+	mm = "!z() { curr=$(git rev-parse --abbrev-ref HEAD) && git co master && git pull && git co $curr && git merge master; }; z"
+	pr = !git fetch && git diff origin/master
 	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
-	pr = !git fetch && git diff origin/develop
-	dev = checkout develop
+	cleanup = !git remote prune origin && git gc
+	delete-branch = branch -D
 
 [core]
 	autocrlf = input
 [merge]
-	tool = bc
+	tool = smerge
 [diff]
-	tool = bc
-[difftool "bc"]
-	path = c:/Program Files/Beyond Compare 4/bcomp.exe 
+	tool = smerge
+[difftool "smerge"]
+	cmd = smerge .
 	prompt = false
 [mergetool]
 	trustExitCode = true
 	prompt = false
 	keepBackup = false
-[mergetool "bc"]
-	path = c:/Program Files/Beyond Compare 4/bcomp.exe
+[mergetool "smerge"]
+	cmd = smerge mergetool "$BASE" "$LOCAL" "$REMOTE" - "$MERGED"
 [credential]
 	helper = store
