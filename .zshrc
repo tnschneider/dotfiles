@@ -32,6 +32,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias c="clear"
 alias qemu="qemu-system-x86_64"
+alias dcu="docker-compose up"
+alias dcb="docker-compose build"
+alias dcub="docker-compose up --build"
 
 zg() {
 	filename=$(basename -- "$1")
