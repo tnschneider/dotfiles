@@ -116,6 +116,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
+block-hosts() {
+	sudo cp ~/.block-hosts /etc/hosts
+}
+
+unblock-hosts() {
+	sudo cp ~/.unblock-hosts /etc/hosts
+}
+
 repo() {
 	cd "$HOME/Repos/$1"
 }
