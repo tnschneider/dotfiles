@@ -27,6 +27,19 @@ _repo_completions()
 
 complete -F _repo_completions repo
 
+platform() {
+	cd "$HOME/Repos/platform/$1"
+}
+
+_platform_completions()
+{
+  COMPREPLY=($(compgen -W "$(ls ~/Repos/platform | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _platform_completions platform
+
+
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -35,6 +48,7 @@ alias qemu="qemu-system-x86_64"
 alias dcu="docker-compose up"
 alias dcb="docker-compose build"
 alias dcub="docker-compose up --build"
+alias portfind="sudo netstat -nlp | grep"
 
 zg() {
 	filename=$(basename -- "$1")
@@ -96,3 +110,11 @@ fi
 eval "$(starship init zsh)"
 
 test -f ~/.zsh_custom && source ~/.zsh_custom
+ 
+export PATH=$PATH:~/.yarn/bin
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export ASPNETCORE_ENVIRONMENT="Development"
