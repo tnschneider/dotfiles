@@ -16,29 +16,29 @@ compinit
 autoload bashcompinit
 bashcompinit
 
+REPO_HOME="$HOME/Repos"
+
 repo() {
-	cd "$HOME/Repos/$1"
+	cd "$REPO_HOME/$1"
 }
 
 _repo_completions()
 {
-  COMPREPLY=($(compgen -W "$(ls ~/Repos | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "$(ls $REPO_HOME | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
 complete -F _repo_completions repo
 
 platform() {
-	cd "$HOME/Repos/platform/platform-$1"
+	cd "$REPO_HOME/platform/platform-$1"
 }
 
 _platform_completions()
 {
-  COMPREPLY=($(compgen -W "$(ls ~/Repos/platform | xargs -n 1 basename | cut -c 10-)" -- "${COMP_WORDS[COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "$(ls $REPO_HOME/platform | xargs -n 1 basename | cut -c 10-)" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
 complete -F _platform_completions platform
-
-
 
 alias ll='ls -alF'
 alias la='ls -A'
