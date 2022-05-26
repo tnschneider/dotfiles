@@ -28,12 +28,12 @@ _repo_completions()
 complete -F _repo_completions repo
 
 platform() {
-	cd "$HOME/Repos/platform/$1"
+	cd "$HOME/Repos/platform/platform-$1"
 }
 
 _platform_completions()
 {
-  COMPREPLY=($(compgen -W "$(ls ~/Repos/platform | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "$(ls ~/Repos/platform | xargs -n 1 basename | cut -c 10-)" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
 complete -F _platform_completions platform
