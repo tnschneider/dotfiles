@@ -19,7 +19,11 @@ bashcompinit
 REPO_HOME="$HOME/Repos"
 
 repo() {
-	cd "$REPO_HOME/$1"
+	loc="$REPO_HOME/$1"
+	
+	
+	
+	# cd "$REPO_HOME/$1"
 }
 
 _repo_completions()
@@ -30,7 +34,21 @@ _repo_completions()
 complete -F _repo_completions repo
 
 platform() {
-	cd "$REPO_HOME/platform/platform-$1"
+	if [[ $# -eq 0 ]]; then
+		cd "$REPO_HOME/platform"
+		return;
+	fi
+
+	loc="$REPO_HOME/platform/platform-$1"
+
+	case $2 in
+		api) loc="$loc/$(ls $loc | grep '.*\.Api$')" ;;
+		tests) loc="$loc/$(ls $loc | grep '.*\.Tests$')" ;;
+		e2e|api-tests) loc="$loc/$(ls $loc | grep '.*\.ApiTests$')" ;;
+		ef|data) loc="$loc/$(ls $loc | grep '.*\.DataAccess\|.*\.Sql ')" ;;
+	esac
+
+	cd $loc
 }
 
 _platform_completions()
