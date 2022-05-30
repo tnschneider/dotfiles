@@ -19,11 +19,7 @@ bashcompinit
 REPO_HOME="$HOME/Repos"
 
 repo() {
-	loc="$REPO_HOME/$1"
-	
-	
-	
-	# cd "$REPO_HOME/$1"
+	cd "$REPO_HOME/$1"
 }
 
 _repo_completions()
