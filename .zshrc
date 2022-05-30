@@ -54,6 +54,17 @@ _platform_completions()
 
 complete -F _platform_completions platform
 
+platform-compose() {
+	$(cd "$REPO_HOME/platform/platform-developers" && ./compose.sh "$@" )
+}
+
+_platform_compose_completions()
+{
+  COMPREPLY=($(compgen -W "$(ls $REPO_HOME/platform | xargs -n 1 basename | cut -c 1-)" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _platform_compose_completions platform-compose
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
