@@ -31,4 +31,4 @@
 [mergetool "smerge"]
 	cmd = smerge mergetool "$BASE" "$LOCAL" "$REMOTE" - "$MERGED"
 [credential]
-	helper = store
+	helper = osxkeychain

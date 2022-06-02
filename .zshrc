@@ -29,41 +29,8 @@ _repo_completions()
 
 complete -F _repo_completions repo
 
-platform() {
-	if [[ $# -eq 0 ]]; then
-		cd "$REPO_HOME/platform"
-		return;
-	fi
-
-	loc="$REPO_HOME/platform/platform-$1"
-
-	case $2 in
-		api) loc="$loc/$(ls $loc | grep '.*\.Api$')" ;;
-		tests) loc="$loc/$(ls $loc | grep '.*\.Tests$')" ;;
-		e2e|api-tests) loc="$loc/$(ls $loc | grep '.*\.ApiTests$')" ;;
-		ef|data) loc="$loc/$(ls $loc | grep '.*\.DataAccess\|.*\.Sql ')" ;;
-	esac
-
-	cd $loc
-}
-
-_platform_completions()
-{
-  COMPREPLY=($(compgen -W "$(ls $REPO_HOME/platform | xargs -n 1 basename | cut -c 10-)" -- "${COMP_WORDS[COMP_CWORD]}"))
-}
-
-complete -F _platform_completions platform
-
-platform-compose() {
-	$(cd "$REPO_HOME/platform/platform-developers" && ./compose.sh "$@" )
-}
-
-_platform_compose_completions()
-{
-  COMPREPLY=($(compgen -W "$(ls $REPO_HOME/platform | xargs -n 1 basename | cut -c 1-)" -- "${COMP_WORDS[COMP_CWORD]}"))
-}
-
-complete -F _platform_compose_completions platform-compose
+PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
+test -f $PF_SH_EXT && source $PF_SH_EXT
 
 alias ll='ls -alF'
 alias la='ls -A'
@@ -129,7 +96,7 @@ kubectl top pods"
 
 if ! command -v starship &> /dev/null
 then
-    curl -fsSL https://starship.rs/install.sh | bash
+    curl -fsSL https://starship.rs/install.sh | sh
 fi
 
 eval "$(starship init zsh)"
