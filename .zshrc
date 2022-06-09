@@ -41,6 +41,7 @@ alias dcu="docker-compose up"
 alias dcb="docker-compose build"
 alias dcub="docker-compose up --build"
 alias portfind="sudo netstat -nlp | grep"
+alias pf="platform"
 
 zg() {
 	filename=$(basename -- "$1")
