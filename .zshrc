@@ -18,6 +18,9 @@ bashcompinit
 
 REPO_HOME="$HOME/Repos"
 
+PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
+test -f $PF_SH_EXT && source $PF_SH_EXT
+
 repo() {
 	cd "$REPO_HOME/$1"
 }
@@ -28,9 +31,6 @@ _repo_completions()
 }
 
 complete -F _repo_completions repo
-
-PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
-test -f $PF_SH_EXT && source $PF_SH_EXT
 
 alias ll='ls -alF'
 alias la='ls -A'
@@ -108,7 +108,7 @@ export PATH=$PATH:~/.yarn/bin
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export ASPNETCORE_ENVIRONMENT="Development"
 
@@ -121,7 +121,3 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 export PATH="/Users/terryschneider/.local/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
