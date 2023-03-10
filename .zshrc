@@ -61,6 +61,14 @@ uzg() {
 	unzip $zipped
 }
 
+portpid() {
+	sudo lsof -i -P | grep LISTEN | grep :$1
+}
+
+pidpath() {
+	ps xuwww -p $1
+}
+
 aks-login() {
 	az login && az account set --subscription "firebend-mca"
 }
