@@ -50,7 +50,7 @@ dp-prefect-port-forward() {
 	on_exit() {
 		kill $APOLLO_LOOP
 		kill $UI_LOOP
-		killall kubectl
+		ps | grep -w 'kubectl port-forward services/prefect' | grep -v grep | awk -F' ' '{print $1}' | xargs kill
 	}
 
 	trap on_exit SIGINT SIGTERM
