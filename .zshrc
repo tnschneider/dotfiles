@@ -32,6 +32,50 @@ _repo_completions()
 
 complete -F _repo_completions repo
 
+dp() {
+	cd "$HOME/Repos/data-platform/$1"
+}
+
+_dp_completions()
+{
+  COMPREPLY=($(compgen -W "$(ls ~/Repos/data-platform | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _dp_completions dp
+
+dp-prefect-port-forward() {
+	APOLLO_LOOP=0
+	UI_LOOP=0
+	
+	on_exit() {
+		kill $APOLLO_LOOP
+		kill $UI_LOOP
+		killall kubectl
+	}
+
+	trap on_exit SIGINT SIGTERM
+
+	{
+		while :
+		do
+			kubectl port-forward services/prefect-apollo 4200:4200 -n prefect &
+			wait
+		done   
+	} &
+	APOLLO_LOOP=$!
+
+	{
+		while :
+		do
+			kubectl port-forward services/prefect-ui 1234:8080 -n prefect &
+			wait
+		done   
+	} &
+	UI_LOOP=$!
+
+	wait
+}
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -42,6 +86,7 @@ alias dcb="docker-compose build"
 alias dcub="docker-compose up --build"
 alias portfind="sudo netstat -nlp | grep"
 alias pf="platform"
+alias dppf="dp-prefect-port-forward"
 
 zg() {
 	filename=$(basename -- "$1")

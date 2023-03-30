@@ -135,6 +135,17 @@ _repo_completions()
 
 complete -F _repo_completions repo
 
+dp() {
+	cd "$HOME/Repos/data-platform/$1"
+}
+
+_dp_completions()
+{
+  COMPREPLY=($(compgen -W "$(ls ~/Repos/data-platform | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _dp_completions dp
+
 alias c="clear"
 alias qemu="qemu-system-x86_64"
 
