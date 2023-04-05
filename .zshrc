@@ -51,7 +51,6 @@ keep_alive() {
 
 dp-prefect-port-forward() {
 	(
-    # Function to handle SIGINT signal (Ctrl+C)
     cleanup() {
       echo "Terminating child processes..."
       kill -s SIGTERM ${PIDS[*]}
@@ -59,20 +58,16 @@ dp-prefect-port-forward() {
 
     PIDS=()
 
-    # Trap SIGINT signal and call cleanup function
     trap 'cleanup; trap - SIGINT SIGTERM; return' SIGINT SIGTERM
 
-    # Start commands in the background
     keep_alive kubectl port-forward services/prefect-ui 1234:8080 -n prefect &
     PIDS+=($!)
 
     keep_alive kubectl port-forward services/prefect-apollo 4200:4200 -n prefect &
     PIDS+=($!)
 
-    # Wait for all child processes to finish
     wait ${PIDS[*]}
 
-    # Cleanup child processes when the function exits
     cleanup
   )
 }
