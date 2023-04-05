@@ -43,37 +43,38 @@ _dp_completions()
 
 complete -F _dp_completions dp
 
+keep_alive() {
+  while true; do
+    "$@"
+  done
+}
+
 dp-prefect-port-forward() {
-	APOLLO_LOOP=0
-	UI_LOOP=0
-	
-	on_exit() {
-		kill $APOLLO_LOOP
-		kill $UI_LOOP
-		ps | grep -w 'kubectl port-forward services/prefect' | grep -v grep | awk -F' ' '{print $1}' | xargs kill
-	}
+	(
+    # Function to handle SIGINT signal (Ctrl+C)
+    cleanup() {
+      echo "Terminating child processes..."
+      kill -s SIGTERM ${PIDS[*]}
+    }
 
-	trap on_exit SIGINT SIGTERM
+    PIDS=()
 
-	{
-		while :
-		do
-			kubectl port-forward services/prefect-apollo 4200:4200 -n prefect &
-			wait
-		done   
-	} &
-	APOLLO_LOOP=$!
+    # Trap SIGINT signal and call cleanup function
+    trap 'cleanup; trap - SIGINT SIGTERM; return' SIGINT SIGTERM
 
-	{
-		while :
-		do
-			kubectl port-forward services/prefect-ui 1234:8080 -n prefect &
-			wait
-		done   
-	} &
-	UI_LOOP=$!
+    # Start commands in the background
+    keep_alive kubectl port-forward services/prefect-ui 1234:8080 -n prefect &
+    PIDS+=($!)
 
-	wait
+    keep_alive kubectl port-forward services/prefect-apollo 4200:4200 -n prefect &
+    PIDS+=($!)
+
+    # Wait for all child processes to finish
+    wait ${PIDS[*]}
+
+    # Cleanup child processes when the function exits
+    cleanup
+  )
 }
 
 alias ll='ls -alF'
