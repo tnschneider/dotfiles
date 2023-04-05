@@ -43,6 +43,10 @@ _dp_completions()
 
 complete -F _dp_completions dp
 
+killgrep() {
+	ps | grep "$*" | grep -v grep | awk -F' ' '{print $1}' | xargs kill
+}
+
 keep_alive() {
   while true; do
     "$@"
