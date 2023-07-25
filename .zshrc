@@ -174,3 +174,8 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 export PATH="/Users/terryschneider/.local/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/terryschneider/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
