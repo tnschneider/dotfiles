@@ -87,6 +87,7 @@ alias dcub="docker-compose up --build"
 alias portfind="sudo netstat -nlp | grep"
 alias pf="platform"
 alias dppf="dp-prefect-port-forward"
+alias dr="dotnet run"
 
 zg() {
 	filename=$(basename -- "$1")
