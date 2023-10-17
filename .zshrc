@@ -165,6 +165,7 @@ export NVM_DIR="$HOME/.nvm"
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export ASPNETCORE_ENVIRONMENT="Development"
+export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 
 # Setting PATH for Python 3.5
 # The original version is saved in .bash_profile.pysave
