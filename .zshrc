@@ -149,6 +149,12 @@ kubectl logs <pod_name> | grep \"<search_term>\"
 kubectl top pods"
 }
 
+source ~/.antigen.zsh
+
+antigen bundle agkozak/zsh-z
+
+antigen apply
+
 if ! command -v starship &> /dev/null
 then
     curl -fsSL https://starship.rs/install.sh | sh
