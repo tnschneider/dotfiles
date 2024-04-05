@@ -185,5 +185,10 @@ export PATH="/Users/terryschneider/.local/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="/Users/terryschneider/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 # pnpm end
+# Add .NET Core SDK tools
+export PATH="$PATH:/Users/terryschneider/.dotnet/tools"

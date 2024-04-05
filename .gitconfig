@@ -32,3 +32,5 @@
 	cmd = smerge mergetool "$BASE" "$LOCAL" "$REMOTE" - "$MERGED"
 [credential]
 	helper = osxkeychain
+[push]
+	autoSetupRemote = true
