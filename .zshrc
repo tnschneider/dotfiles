@@ -88,6 +88,7 @@ alias portfind="sudo netstat -nlp | grep"
 alias pf="platform"
 alias dppf="dp-prefect-port-forward"
 alias dr="dotnet run"
+alias pnpx="pnpm dlx"
 
 zg() {
 	filename=$(basename -- "$1")
