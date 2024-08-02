@@ -76,6 +76,15 @@ dp-prefect-port-forward() {
   )
 }
 
+anykey() {
+	read REPLY\?"Press any key to execute \"$*\"" response
+	case "$REPLY" in 
+		*) echo $($*)
+		;; 
+	esac
+}
+
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -89,6 +98,8 @@ alias pf="platform"
 alias dppf="dp-prefect-port-forward"
 alias dr="dotnet run"
 alias pnpx="pnpm dlx"
+alias python=python3
+alias pip=pip3
 
 zg() {
 	filename=$(basename -- "$1")
@@ -176,7 +187,7 @@ export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 
 # Setting PATH for Python 3.5
 # The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}"
+PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
 export PATH
 
 eval "$(pyenv init --path)"
@@ -193,3 +204,19 @@ esac
 # pnpm end
 # Add .NET Core SDK tools
 export PATH="$PATH:/Users/terryschneider/.dotnet/tools"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
