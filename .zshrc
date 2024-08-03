@@ -53,29 +53,6 @@ keep_alive() {
   done
 }
 
-dp-prefect-port-forward() {
-	(
-    cleanup() {
-      echo "Terminating child processes..."
-      kill -s SIGTERM ${PIDS[*]}
-    }
-
-    PIDS=()
-
-    trap 'cleanup; trap - SIGINT SIGTERM; return' SIGINT SIGTERM
-
-    keep_alive kubectl port-forward services/prefect-ui 1234:8080 -n prefect &
-    PIDS+=($!)
-
-    keep_alive kubectl port-forward services/prefect-apollo 4200:4200 -n prefect &
-    PIDS+=($!)
-
-    wait ${PIDS[*]}
-
-    cleanup
-  )
-}
-
 anykey() {
 	read REPLY\?"Press any key to execute \"$*\" "
 	case "$REPLY" in 
