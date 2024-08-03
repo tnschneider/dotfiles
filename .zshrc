@@ -77,7 +77,7 @@ dp-prefect-port-forward() {
 }
 
 anykey() {
-	read REPLY\?"Press any key to execute \"$*\""
+	read REPLY\?"Press any key to execute \"$*\" "
 	case "$REPLY" in 
 		*) eval $*
 		;; 
