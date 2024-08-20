@@ -21,6 +21,37 @@ REPO_HOME="$HOME/Repos"
 PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 
+ct() {
+	echo $1
+	if [[ $# -eq 0 ]]; then
+		cd "$REPO_HOME/ct/controltower"
+		return;
+	fi
+
+	if [[ $1 = "developers" || $1 = "devs" ]]; then
+		cd "$REPO_HOME/ct/ct-developers"
+		return;
+	fi
+
+	if [[ $1 = "mobile" ]]; then
+		cd "$REPO_HOME/ct/controltowermobile"
+		return;
+	fi
+
+	if [[ $1 = "modules" ]]; then
+		cd "$REPO_HOME/ct/ct-modules"
+		return;
+	fi
+
+	cd "$REPO_HOME/ct/$1"
+}
+
+_ct_completions() {
+  COMPREPLY=($(compgen -W "devs mobile modules" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _ct_completions ct
+
 repo() {
 	cd "$REPO_HOME/$1"
 }
