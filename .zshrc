@@ -85,7 +85,7 @@ keep_alive() {
 }
 
 anykey() {
-	read REPLY\?"Press any key to execute \"$*\" "
+	read -k1 -s REPLY\?"Press any key to execute \"$*\" "
 	case "$REPLY" in 
 		*) eval $*
 		;; 
