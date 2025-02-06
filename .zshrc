@@ -92,6 +92,9 @@ anykey() {
 	esac
 }
 
+start() {
+	eval $STARTCMD
+}
 
 alias ll='ls -alF'
 alias la='ls -A'
