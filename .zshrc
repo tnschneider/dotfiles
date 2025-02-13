@@ -93,6 +93,7 @@ anykey() {
 }
 
 start() {
+	printf "$STARTCMD\n"
 	eval $STARTCMD
 }
 

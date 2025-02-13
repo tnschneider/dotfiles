@@ -34,3 +34,6 @@
 	helper = osxkeychain
 [push]
 	autoSetupRemote = true
+[http]
+	version = HTTP/1.1
+	postBuffer = 157286400
