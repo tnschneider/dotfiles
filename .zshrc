@@ -64,12 +64,32 @@ _repo_completions()
 complete -F _repo_completions repo
 
 dp() {
-	cd "$HOME/Repos/data-platform/$1"
+	if [[ $# -eq 0 ]]; then
+		cd "$REPO_HOME/data-pipelines"
+		return;
+	fi
+
+	if [[ $1 = "walmart" ]]; then
+		cd "$REPO_HOME/data-pipelines/ct-walmart-data-pipeline"
+		return;
+	fi
+
+	if [[ $1 = "platform" ]]; then
+		cd "$REPO_HOME/data-pipelines/platform-data-pipeline"
+		return;
+	fi
+
+	if [[ $1 = "infra" ]]; then
+		cd "$REPO_HOME/data-pipelines/firebend-dagster-infrastructure"
+		return;
+	fi
+
+	cd "$REPO_HOME/data-pipelines/$1"
 }
 
 _dp_completions()
 {
-  COMPREPLY=($(compgen -W "$(ls ~/Repos/data-platform | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "walmart platform infra" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
 complete -F _dp_completions dp
