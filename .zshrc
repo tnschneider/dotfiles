@@ -16,8 +16,130 @@ compinit
 autoload bashcompinit
 bashcompinit
 
+# Load custom script per environment
+test -f ~/.zsh_custom && source ~/.zsh_custom
+
+
+###############
+### ANTIGEN ###
+###############
+
+source ~/.antigen.zsh
+
+antigen bundle agkozak/zsh-z
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle "MichaelAquilina/zsh-you-should-use"
+
+antigen apply
+
+
+################
+### STARSHIP ###
+################
+
+if ! command -v starship &> /dev/null
+then
+    curl -fsSL https://starship.rs/install.sh | sh
+fi
+
+eval "$(starship init zsh)"
+
+
+################
+### ENV VARS ###
+################
+
+export ASPNETCORE_ENVIRONMENT="Development"
+export AZURE_FUNCTIONS_ENVIRONMENT="Development"
+
+
+###############
+### ALIASES ###
+###############
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias c="clear"
+alias dcu="docker compose up"
+alias dcb="docker compose build"
+alias dcub="docker compose up --build"
+alias pf="platform"
+alias dr="dotnet run"
+alias pnpx="pnpm dlx"
+alias python=python3
+alias pip=pip3
+alias portfind="sudo netstat -nlp | grep"
+alias zshrc="source ~/.zshrc"
+alias pidpath="ps xuwww -p"
+alias portpid="sudo lsof -i -P | grep LISTEN | grep"
+
+
+#################
+### FUNCTIONS ###
+#################
+
+killgrep() {
+	ps | grep "$*" | grep -v grep | awk -F' ' '{print $1}' | xargs kill
+}
+
+keep_alive() {
+  while true; do
+    "$@"
+  done
+}
+
+anykey() {
+	read -k1 -s REPLY\?"Press any key to execute \"$*\" "
+	case "$REPLY" in 
+		*) eval $*
+		;; 
+	esac
+}
+
+start() {
+	printf "$STARTCMD\n"
+	eval $STARTCMD
+}
+
+printstart() {
+	echo $STARTCMD
+}
+
+android() {
+	AVD=$1
+	if [[ -z $AVD ]]; then
+		AVD="TC-72"
+	fi
+    ~/Library/Android/sdk/emulator/emulator -avd $AVD
+}
+
+zg() {
+	filename=$(basename -- "$1")
+
+	zip "$filename" "$1"
+
+	gpg -c "$1.zip"
+}
+
+uzg() {
+	gpg "$1"
+
+	f=$1
+
+	zipped=${f::-4}
+
+	unzip $zipped
+}
+
+
+#####################
+### NAV SHORTCUTS ###
+#####################
+
 REPO_HOME="$HOME/Repos"
 
+# platform
 PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 
@@ -94,93 +216,18 @@ _dp_completions()
 
 complete -F _dp_completions dp
 
-killgrep() {
-	ps | grep "$*" | grep -v grep | awk -F' ' '{print $1}' | xargs kill
-}
 
-keep_alive() {
-  while true; do
-    "$@"
-  done
-}
-
-anykey() {
-	read -k1 -s REPLY\?"Press any key to execute \"$*\" "
-	case "$REPLY" in 
-		*) eval $*
-		;; 
-	esac
-}
-
-start() {
-	printf "$STARTCMD\n"
-	eval $STARTCMD
-}
-
-printstart() {
-	echo $STARTCMD
-}
-
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias c="clear"
-alias dcu="docker compose up"
-alias dcb="docker compose build"
-alias dcub="docker compose up --build"
-alias pf="platform"
-alias dr="dotnet run"
-alias pnpx="pnpm dlx"
-alias python=python3
-alias pip=pip3
-alias portfind="sudo netstat -nlp | grep"
-alias zshrc="source ~/.zshrc"
-alias pidpath="ps xuwww -p"
-alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-
-zg() {
-	filename=$(basename -- "$1")
-
-	zip "$filename" "$1"
-
-	gpg -c "$1.zip"
-}
-
-uzg() {
-	gpg "$1"
-
-	f=$1
-
-	zipped=${f::-4}
-
-	unzip $zipped
-}
-
-source ~/.antigen.zsh
-
-antigen bundle agkozak/zsh-z
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle "MichaelAquilina/zsh-you-should-use"
-
-antigen apply
-
-if ! command -v starship &> /dev/null
-then
-    curl -fsSL https://starship.rs/install.sh | sh
-fi
-
-eval "$(starship init zsh)"
-
-test -f ~/.zsh_custom && source ~/.zsh_custom
+####################
+### APPLICATIONS ###
+####################
  
 export PATH=$PATH:~/.yarn/bin
+
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export ASPNETCORE_ENVIRONMENT="Development"
-export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 
 # Setting PATH for Python 3.5
 # The original version is saved in .bash_profile.pysave
