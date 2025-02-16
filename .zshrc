@@ -125,17 +125,18 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias c="clear"
-alias qemu="qemu-system-x86_64"
-alias dcu="docker-compose up"
-alias dcb="docker-compose build"
-alias dcub="docker-compose up --build"
-alias portfind="sudo netstat -nlp | grep"
+alias dcu="docker compose up"
+alias dcb="docker compose build"
+alias dcub="docker compose up --build"
 alias pf="platform"
-alias dppf="dp-prefect-port-forward"
 alias dr="dotnet run"
 alias pnpx="pnpm dlx"
 alias python=python3
 alias pip=pip3
+alias portfind="sudo netstat -nlp | grep"
+alias zshrc="source ~/.zshrc"
+alias pidpath="ps xuwww -p"
+alias portpid="sudo lsof -i -P | grep LISTEN | grep"
 
 zg() {
 	filename=$(basename -- "$1")
@@ -155,17 +156,11 @@ uzg() {
 	unzip $zipped
 }
 
-portpid() {
-	sudo lsof -i -P | grep LISTEN | grep :$1
-}
-
-pidpath() {
-	ps xuwww -p $1
-}
-
 source ~/.antigen.zsh
 
 antigen bundle agkozak/zsh-z
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle "MichaelAquilina/zsh-you-should-use"
 
 antigen apply
 
