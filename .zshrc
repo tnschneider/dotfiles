@@ -28,7 +28,8 @@ source ~/.antigen.zsh
 
 antigen bundle agkozak/zsh-z
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle "MichaelAquilina/zsh-you-should-use"
+antigen bundle MichaelAquilina/zsh-you-should-use
+antigen bundle extract
 
 antigen apply
 
@@ -114,24 +115,6 @@ android() {
     ~/Library/Android/sdk/emulator/emulator -avd $AVD
 }
 
-zg() {
-	filename=$(basename -- "$1")
-
-	zip "$filename" "$1"
-
-	gpg -c "$1.zip"
-}
-
-uzg() {
-	gpg "$1"
-
-	f=$1
-
-	zipped=${f::-4}
-
-	unzip $zipped
-}
-
 
 #####################
 ### NAV SHORTCUTS ###
@@ -139,10 +122,23 @@ uzg() {
 
 REPO_HOME="$HOME/Repos"
 
+# repos
+repo() {
+	cd "$REPO_HOME/$1"
+}
+
+_repo_completions()
+{
+  COMPREPLY=($(compgen -W "$(ls $REPO_HOME | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
+complete -F _repo_completions repo
+
 # platform
-PF_SH_EXT="$REPO_HOME/platform/platform-developers/platform-sh-extensions.sh"
+PF_SH_EXT="$REPO_HOME/platform/ct-platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 
+# control tower legacy
 ct() {
 	echo $1
 	if [[ $# -eq 0 ]]; then
@@ -174,17 +170,7 @@ _ct_completions() {
 
 complete -F _ct_completions ct
 
-repo() {
-	cd "$REPO_HOME/$1"
-}
-
-_repo_completions()
-{
-  COMPREPLY=($(compgen -W "$(ls $REPO_HOME | xargs -n 1 basename)" -- "${COMP_WORDS[COMP_CWORD]}"))
-}
-
-complete -F _repo_completions repo
-
+# data pipelines
 dp() {
 	if [[ $# -eq 0 ]]; then
 		cd "$REPO_HOME/data-pipelines"
