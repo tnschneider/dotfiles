@@ -78,11 +78,20 @@ alias portfind="sudo netstat -nlp | grep"
 alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
+alias kadprod="kalp 5000"
+alias kadqa="kalp 4000"
 
 
 #################
 ### FUNCTIONS ###
 #################
+
+kalp() {
+  while true; do 
+  	nc -z localhost $1; 
+	sleep 10; 
+  done 
+}
 
 killgrep() {
 	ps | grep "$*" | grep -v grep | awk -F' ' '{print $1}' | xargs kill
