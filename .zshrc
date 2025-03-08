@@ -153,7 +153,6 @@ test -f $PF_SH_EXT && source $PF_SH_EXT
 
 # control tower legacy
 ct() {
-	echo $1
 	if [[ $# -eq 0 ]]; then
 		cd "$REPO_HOME/ct/controltower"
 		return;
@@ -174,11 +173,31 @@ ct() {
 		return;
 	fi
 
+	if [[ $1 = "test" || $1 = "tests" ]]; then
+		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Test"
+		return;
+	fi
+
+	if [[ $1 = "web" ]]; then
+		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Web"
+		return;
+	fi
+
+	if [[ $1 = "worker" ]]; then
+		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Worker"
+		return;
+	fi
+
+	if [[ $1 = "api-tests" ]]; then
+		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.ApiTests"
+		return;
+	fi
+
 	cd "$REPO_HOME/ct/$1"
 }
 
 _ct_completions() {
-  COMPREPLY=($(compgen -W "devs mobile modules" -- "${COMP_WORDS[COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "devs mobile modules test web worker api-tests" -- "${COMP_WORDS[COMP_CWORD]}"))
 }
 
 complete -F _ct_completions ct
