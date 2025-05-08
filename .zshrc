@@ -154,17 +154,17 @@ test -f $PF_SH_EXT && source $PF_SH_EXT
 # control tower legacy
 ct() {
 	if [[ $# -eq 0 ]]; then
-		cd "$REPO_HOME/ct/controltower"
+		cd "$REPO_HOME/walmart-control-tower"
 		return;
 	fi
 
 	if [[ $1 = "developers" || $1 = "devs" ]]; then
-		cd "$REPO_HOME/ct/ct-developers"
+		cd "$REPO_HOME/walmart-control-tower/ct-developers"
 		return;
 	fi
 
 	if [[ $1 = "mobile" ]]; then
-		cd "$REPO_HOME/ct/controltowermobile"
+		cd "$REPO_HOME/walmart-control-tower/mobile-app"
 		return;
 	fi
 
@@ -174,26 +174,26 @@ ct() {
 	fi
 
 	if [[ $1 = "test" || $1 = "tests" ]]; then
-		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Test"
+		cd "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Test"
 		return;
 	fi
 
 	if [[ $1 = "web" ]]; then
-		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Web"
+		cd "$REPO_HOME/cwalmart-control-tower/ct-app/TrailerTracking.Web"
 		return;
 	fi
 
 	if [[ $1 = "worker" ]]; then
-		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.Worker"
+		cd "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Worker"
 		return;
 	fi
 
 	if [[ $1 = "api-tests" ]]; then
-		cd "$REPO_HOME/ct/controltower/TrailerTracking/TrailerTracking.ApiTests"
+		cd "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.ApiTests"
 		return;
 	fi
 
-	cd "$REPO_HOME/ct/$1"
+	cd "$REPO_HOME/control-tower-walmart/$1"
 }
 
 _ct_completions() {
