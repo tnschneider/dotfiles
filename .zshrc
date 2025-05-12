@@ -128,6 +128,42 @@ android() {
     ~/Library/Android/sdk/emulator/emulator -avd $AVD
 }
 
+android-launch() {
+	AVD=$1
+	EMULATOR=$2
+	APK_PATH=$3
+	PACKAGE_NAME=$4
+	~/Library/Android/sdk/emulator/emulator -avd $AVD &
+	adb -s $EMULATOR wait-for-device
+	BOOT_COMPLETED=""
+	while [ "$BOOT_COMPLETED" != "1" ]; do
+		BOOT_COMPLETED=$(adb -s $EMULATOR shell getprop sys.boot_completed | tr -d '\r')
+		sleep 1
+	done
+	adb -s $EMULATOR install -r $APK_PATH
+	sleep 1
+	adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 &
+}
+
+ct-mobile-launch() {
+	android-launch "TC-72"\
+		"emulator-5554"\
+		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		"com.firebend.controltower" &
+}
+
+ct-mobile-launch-two() {
+	android-launch "TC-72"\
+		"emulator-5554"\
+		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		"com.firebend.controltower" &
+
+	android-launch "TC-72_2"\
+		"emulator-5556"\
+		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		"com.firebend.controltower" &
+}
+
 
 #####################
 ### NAV SHORTCUTS ###
