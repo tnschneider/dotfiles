@@ -56,6 +56,7 @@ eval "$(starship init zsh)"
 
 export ASPNETCORE_ENVIRONMENT="Development"
 export AZURE_FUNCTIONS_ENVIRONMENT="Development"
+export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
 
 
 ###############
