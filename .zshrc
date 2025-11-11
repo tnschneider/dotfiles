@@ -134,34 +134,34 @@ android-launch() {
 	EMULATOR=$2
 	APK_PATH=$3
 	PACKAGE_NAME=$4
-	~/Library/Android/sdk/emulator/emulator -avd $AVD &
+	~/Library/Android/sdk/emulator/emulator -avd $AVD > /dev/null 2>&1 &
 	adb -s $EMULATOR wait-for-device
 	BOOT_COMPLETED=""
 	while [ "$BOOT_COMPLETED" != "1" ]; do
 		BOOT_COMPLETED=$(adb -s $EMULATOR shell getprop sys.boot_completed | tr -d '\r')
 		sleep 1
 	done
-	adb -s $EMULATOR install -r $APK_PATH
+	adb -s $EMULATOR install -r $APK_PATH > /dev/null 2>&1
 	sleep 1
-	adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 &
+	adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1 &
 }
 
 ct-mobile-launch() {
 	android-launch "TC-72"\
 		"emulator-5554"\
-		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
 		"com.firebend.controltower" &
 }
 
 ct-mobile-launch-two() {
 	android-launch "TC-72"\
 		"emulator-5554"\
-		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
 		"com.firebend.controltower" &
 
 	android-launch "TC-72_2"\
 		"emulator-5556"\
-		"~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
 		"com.firebend.controltower" &
 }
 
@@ -185,7 +185,8 @@ _repo_completions()
 complete -F _repo_completions repo
 
 # platform
-PF_SH_EXT="$REPO_HOME/platform/ct-platform/platform-developers/platform-sh-extensions.sh"
+PLATFORM_HOME="$REPO_HOME/platform"
+PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 
 # control tower legacy
