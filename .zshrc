@@ -87,6 +87,7 @@ alias kadqa="kalp 4000"
 ### FUNCTIONS ###
 #################
 
+## Utility Functions
 kalp() {
   while true; do 
   	nc -z localhost $1; 
@@ -121,6 +122,7 @@ printstart() {
 	echo $STARTCMD
 }
 
+## Android Functions
 android() {
 	AVD=$1
 	if [[ -z $AVD ]]; then
@@ -165,7 +167,7 @@ ct-mobile-launch-two() {
 		"com.firebend.controltower" &
 }
 
-## Entity Framework
+## Entity Framework Functions
 ef() {
 	if [[ $1 = "mg" || $1 = "migrations" ]]; then
 		shift
