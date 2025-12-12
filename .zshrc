@@ -165,6 +165,37 @@ ct-mobile-launch-two() {
 		"com.firebend.controltower" &
 }
 
+## Entity Framework
+ef() {
+	if [[ $1 = "mg" || $1 = "migrations" ]]; then
+		shift
+		dotnet ef migrations "$@" 
+		return;		
+	fi
+
+	if [[ $1 = "mga" ]]; then
+		shift
+		dotnet ef migrations add "$@"
+		return;
+	fi
+
+	if [[ $1 = "db" || $1 = "database" ]]; then
+		shift
+		dotnet ef database "$@"
+		return;
+	fi
+
+	if [[ $1 = "dbu" ]]; then
+		shift
+		dotnet ef database update "$@"
+		return;
+	fi
+
+	dotnet ef "$@"
+
+	echo "Usage: ef [migrations|mg|mga|database|db|dbu] [options]"
+}
+
 
 #####################
 ### NAV SHORTCUTS ###
