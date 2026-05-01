@@ -224,6 +224,8 @@ test -f $PF_SH_EXT && source $PF_SH_EXT
 
 pf-api-sandbox() {
 	cd "$PLATFORM_HOME/ct-platform/platform-developers/scripts/api-sandbox"
+	export PF_DEFAULT_ENV="local"
+	export PF_DEFAULT_WH="0103ed58-cf76-43a7-afdb-08de4349e37d"
 }
 
 # control tower legacy
