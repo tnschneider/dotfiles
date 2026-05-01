@@ -222,6 +222,10 @@ PLATFORM_HOME="$REPO_HOME/platform"
 PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 
+pf-api-sandbox() {
+	cd "$PLATFORM_HOME/ct-platform/platform-developers/scripts/api-sandbox"
+}
+
 # control tower legacy
 ct() {
 	if [[ $# -eq 0 ]]; then
@@ -297,6 +301,8 @@ dp() {
 
 	cd "$REPO_HOME/data-pipelines/$1"
 }
+
+
 
 _dp_completions()
 {
