@@ -1,7 +1,7 @@
 version: 7
 profiles:
   - type: local
-    name: Repos
+    name: 01 Repos
     options:
       command: /bin/zsh
       args:
@@ -12,7 +12,7 @@ profiles:
     icon: fas fa-code-branch
   - id: split-layout:custom:WMT-CT-Backend:18d5afad-7e5a-4e83-ae6e-73248c7e6973
     type: split-layout
-    name: WMT CT
+    name: 06 WMT CT
     options:
       recoveryToken:
         type: app:split-tab
@@ -155,7 +155,7 @@ profiles:
     icon: fas fa-code
   - id: split-layout:custom:WMT-CT-Mobile:d19c310a-a642-4d91-a62a-e1811053d7ce
     type: split-layout
-    name: WMT CT Mobile
+    name: 07 WMT CT Mobile
     options:
       recoveryToken:
         type: app:split-tab
@@ -299,7 +299,7 @@ profiles:
     icon: fas fa-mobile
   - id: split-layout:custom:Data-Pipelines:8c64a6b4-0f2f-4f58-a8ab-288983dec8b4
     type: split-layout
-    name: Data Pipelines
+    name: 08 Data Pipelines
     options:
       recoveryToken:
         type: app:split-tab
@@ -444,7 +444,7 @@ profiles:
                 disableDynamicTitle: false
     icon: fas fa-database
   - type: local
-    name: Platform Docker
+    name: 02 Platform Docker
     options:
       restoreFromPTYID: null
       command: /bin/zsh
@@ -465,7 +465,7 @@ profiles:
     behaviorOnSessionEnd: auto
   - id: split-layout:custom:Platform:02007741-985c-4c45-990a-8a9d7a893715
     type: split-layout
-    name: Platform
+    name: 03 Platform
     icon: fas fa-layer-group
     options:
       recoveryToken:
@@ -573,7 +573,7 @@ profiles:
                 disableDynamicTitle: false
   - id: split-layout:custom:Platform-CPW:af70cd75-9f0c-42a7-be9c-2092c5b0e11b
     type: split-layout
-    name: CPW
+    name: 04 CPW
     icon: fas fa-gear
     options:
       recoveryToken:
@@ -646,7 +646,7 @@ profiles:
             disableDynamicTitle: false
   - id: split-layout:custom:Platform-CPW-UI:b3e2f1a4-7c8d-4e9f-a0b1-c2d3e4f5a6b7
     type: split-layout
-    name: CPW UI
+    name: 05 CPW UI
     icon: fas fa-desktop
     options:
       recoveryToken:
