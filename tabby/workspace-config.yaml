@@ -1,0 +1,8 @@
+- name: WMT CT
+  tabs:
+    - title: WMT CT Backend
+      color: '#03fccf'
+      profile: WMT CT Backend
+    - title: WMT CT Mobile
+      color: '#fc036b'
+      profile: WMT CT Mobile

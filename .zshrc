@@ -218,7 +218,7 @@ _repo_completions()
 complete -F _repo_completions repo
 
 # platform
-PLATFORM_HOME="$REPO_HOME/platform"
+PLATFORM_HOME="$REPO_HOME"
 PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
 test -f $PF_SH_EXT && source $PF_SH_EXT
 

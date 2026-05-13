@@ -1,0 +1,975 @@
+version: 7
+profiles:
+  - type: local
+    name: Repos
+    options:
+      command: /bin/zsh
+      args:
+        - '--login'
+      cwd: /Users/terryschneider/Repos
+      env: {}
+    id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+    icon: fas fa-code-branch
+  - id: split-layout:custom:WMT-CT-Backend:18d5afad-7e5a-4e83-ae6e-73248c7e6973
+    type: split-layout
+    name: WMT CT
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT Docker
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/ct-developers
+                    env:
+                      STARTCMD: docker compose up
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: /Users/terryschneider/Repos/walmart-control-tower
+                    env:
+                      STARTCMD: pnpm run serve:ct-web-and-worker
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: /Users/terryschneider/Repos/walmart-control-tower
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT Tests
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/ct-app/TrailerTracking.Test
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+    icon: fas fa-code
+  - id: split-layout:custom:WMT-CT-Mobile:d19c310a-a642-4d91-a62a-e1811053d7ce
+    type: split-layout
+    name: WMT CT Mobile
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: Build API Client
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/mobile-app/src/ControlTowerMobile.Api.Client
+                    env:
+                      STARTCMD: ./nswag-build.sh
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT Mobile
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT Mobile
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/mobile-app
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT Mobile
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT Developers
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/ct-developers
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT Mobile
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:default
+                  type: local
+                  name: WMT CT Mobile Tests
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/walmart-control-tower/mobile-app/src/ControlTowerMobile.Tests
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: ''
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: true
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: WMT CT Mobile
+                tabCustomTitle: ''
+                disableDynamicTitle: false
+    icon: fas fa-mobile
+  - id: split-layout:custom:Data-Pipelines:8c64a6b4-0f2f-4f58-a8ab-288983dec8b4
+    type: split-layout
+    name: Data Pipelines
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: Platform Data Pipeline
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/data-pipelines/platform-data-pipeline
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-database
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Data Pipelines
+                tabIcon: fas fa-database
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: Firebend Dagster Infrastructure
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/data-pipelines/firebend-dagster-infrastructure
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-code-branch
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Data Pipelines
+                tabCustomTitle: ''
+                tabIcon: fas fa-database
+                disableDynamicTitle: false
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: CT Walmart Data Pipeline
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: >-
+                      /Users/terryschneider/Repos/data-pipelines/ct-walmart-data-pipeline
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-code-branch
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Data Pipelines
+                tabCustomTitle: ''
+                tabIcon: fas fa-database
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: Data Pipelines
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: /Users/terryschneider/Repos/data-pipelines
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-code-branch
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Data Pipelines
+                tabCustomTitle: ''
+                tabIcon: fas fa-database
+                disableDynamicTitle: false
+    icon: fas fa-database
+  - type: local
+    name: Platform Docker
+    options:
+      restoreFromPTYID: null
+      command: /bin/zsh
+      args:
+        - '--login'
+      cwd: /Users/terryschneider/Repos/ct-platform/platform-developers
+      env:
+        STARTCMD: docker compose up
+      width: null
+      height: null
+      pauseAfterExit: false
+      runAsAdministrator: false
+    id: local:custom:Platform-Docker:add9341f-c44f-49c9-ad6b-5f871d36af98
+    group: ''
+    icon: fas fa-server
+    color: ''
+    disableDynamicTitle: false
+    behaviorOnSessionEnd: auto
+  - id: split-layout:custom:Platform:02007741-985c-4c45-990a-8a9d7a893715
+    type: split-layout
+    name: Platform
+    icon: fas fa-layer-group
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: Platform
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos/ct-platform
+                env:
+                  STARTCMD: pnpm run serve:all
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-layer-group
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: Platform
+            tabIcon: fas fa-layer-group
+            disableDynamicTitle: false
+          - type: app:split-tab
+            ratios:
+              - 0.5
+              - 0.5
+            orientation: v
+            children:
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: Platform
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: /Users/terryschneider/Repos/ct-platform
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-layer-group
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Platform
+                tabCustomTitle: ''
+                tabIcon: fas fa-layer-group
+                disableDynamicTitle: false
+              - type: app:local-tab
+                profile:
+                  id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+                  type: local
+                  name: Platform
+                  group: ''
+                  options:
+                    restoreFromPTYID: false
+                    command: /bin/zsh
+                    args:
+                      - '--login'
+                    cwd: /Users/terryschneider/Repos/ct-platform
+                    env: {}
+                    width: null
+                    height: null
+                    pauseAfterExit: false
+                    runAsAdministrator: false
+                  icon: fas fa-layer-group
+                  color: ''
+                  disableDynamicTitle: false
+                  weight: 0
+                  isBuiltin: false
+                  isTemplate: false
+                  terminalColorScheme: null
+                  behaviorOnSessionEnd: auto
+                savedState: false
+                tabTitle: Platform
+                tabCustomTitle: ''
+                tabIcon: fas fa-layer-group
+                disableDynamicTitle: false
+  - id: split-layout:custom:Platform-CPW:af70cd75-9f0c-42a7-be9c-2092c5b0e11b
+    type: split-layout
+    name: CPW
+    icon: fas fa-gear
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: CPW
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: >-
+                  /Users/terryschneider/Repos/ct-platform/client-apps/Cpw/Client.Cpw.Api
+                env:
+                  STARTCMD: dotnet watch run
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-gear
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: CPW
+            tabIcon: fas fa-gear
+            disableDynamicTitle: false
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: CPW
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos/ct-platform/client-apps/Cpw/
+                env: {}
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-gear
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: CPW
+            tabCustomTitle: ''
+            tabIcon: fas fa-gear
+            disableDynamicTitle: false
+  - id: split-layout:custom:Platform-CPW-UI:b3e2f1a4-7c8d-4e9f-a0b1-c2d3e4f5a6b7
+    type: split-layout
+    name: CPW UI
+    icon: fas fa-desktop
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: CPW UI
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos/platform-ui
+                env:
+                  STARTCMD: pnpm serve:cpw
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-desktop
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: CPW UI
+            tabIcon: fas fa-desktop
+            disableDynamicTitle: false
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: CPW UI
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos/platform-ui
+                env: {}
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-desktop
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: CPW UI
+            tabCustomTitle: ''
+            tabIcon: fas fa-desktop
+            disableDynamicTitle: false
+configSync:
+  parts: {}
+hotkeys:
+  toggle-window:
+    - ⌘-Shift-C
+  copy-current-path: []
+  ctrl-c:
+    - Ctrl-C
+  copy:
+    - ⌘-C
+  paste:
+    - ⌘-V
+  clear:
+    - ⌘-K
+  select-all:
+    - ⌘-A
+  zoom-in:
+    - ⌘-=
+    - ⌘-Shift-=
+  zoom-out:
+    - ⌘--
+    - ⌘-Shift--
+  reset-zoom:
+    - ⌘-0
+  home:
+    - ⌘-Left
+    - Home
+  end:
+    - ⌘-Right
+    - End
+  previous-word:
+    - ⌥-Left
+  next-word:
+    - ⌥-Right
+  delete-previous-word:
+    - ⌥-Backspace
+  delete-line:
+    - ⌘-Backspace
+  delete-next-word:
+    - ⌥-Delete
+  search:
+    - ⌘-F
+  pane-focus-all:
+    - ⌘-Shift-I
+  focus-all-tabs:
+    - ⌘-⌥-Shift-I
+  scroll-to-top:
+    - Shift-PageUp
+  scroll-up:
+    - ⌥-PageUp
+  scroll-down:
+    - ⌥-PageDown
+  scroll-to-bottom:
+    - Shift-PageDown
+  restart-telnet-session: []
+  restart-ssh-session: []
+  launch-winscp: []
+  settings-tab: {}
+  settings:
+    - ⌘-,
+  serial:
+    - Alt-K
+  restart-serial-session: []
+  new-tab:
+    - ⌘-T
+  new-window:
+    - ⌘-N
+  profile: {}
+  profile-selectors: {}
+  toggle-fullscreen:
+    - Ctrl+⌘+F
+  close-tab:
+    - ⌘-W
+  reopen-tab:
+    - ⌘-Shift-T
+  toggle-last-tab: []
+  rename-tab:
+    - ⌘-R
+  next-tab:
+    - Ctrl-Tab
+  previous-tab:
+    - Ctrl-Shift-Tab
+  move-tab-left:
+    - ⌘-Shift-Left
+  move-tab-right:
+    - ⌘-Shift-Right
+  rearrange-panes:
+    - Ctrl-Shift
+  tab-1:
+    - ⌘-1
+  tab-2:
+    - ⌘-2
+  tab-3:
+    - ⌘-3
+  tab-4:
+    - ⌘-4
+  tab-5:
+    - ⌘-5
+  tab-6:
+    - ⌘-6
+  tab-7:
+    - ⌘-7
+  tab-8:
+    - ⌘-8
+  tab-9:
+    - ⌘-9
+  tab-10: []
+  duplicate-tab: []
+  restart-tab: []
+  reconnect-tab: []
+  disconnect-tab: []
+  explode-tab:
+    - ⌘-Shift-.
+  combine-tabs:
+    - ⌘-Shift-,
+  tab-11: []
+  tab-12: []
+  tab-13: []
+  tab-14: []
+  tab-15: []
+  tab-16: []
+  tab-17: []
+  tab-18: []
+  tab-19: []
+  tab-20: []
+  split-right:
+    - ⌘-Shift-D
+  split-bottom:
+    - ⌘-D
+  split-left: []
+  split-top: []
+  pane-nav-right:
+    - ⌘-⌥-Right
+  pane-nav-down:
+    - ⌘-⌥-Down
+  pane-nav-up:
+    - ⌘-⌥-Up
+  pane-nav-left:
+    - ⌘-⌥-Left
+  pane-nav-previous:
+    - ⌘-⌥-[
+  pane-nav-next:
+    - ⌘-⌥-]
+  pane-nav-1: []
+  pane-nav-2: []
+  pane-nav-3: []
+  pane-nav-4: []
+  pane-nav-5: []
+  pane-nav-6: []
+  pane-nav-7: []
+  pane-nav-8: []
+  pane-nav-9: []
+  pane-maximize:
+    - ⌘-⌥-Enter
+  close-pane:
+    - ⌘-Shift-W
+  pane-increase-vertical: []
+  pane-decrease-vertical: []
+  pane-increase-horizontal: []
+  pane-decrease-horizontal: []
+  profile-selector:
+    - ⌘-E
+  switch-profile:
+    - ⌘-Shift-E
+  command-selector:
+    - ⌘-Shift-P
+  group-selectors: {}
+  workspace-profile-1: []
+  workspace-profile-2: []
+  workspace-profile-3: []
+  workspace-profile-4: []
+  workspace-profile-5: []
+  scroll-page-up:
+    - ⌥-PageUp
+  scroll-page-down:
+    - ⌥-PageDown
+terminal:
+  searchOptions: {}
+  colorScheme:
+    name: Chalk
+    foreground: '#d2d8d9'
+    background: '#2b2d2e'
+    cursor: '#708284'
+    colors:
+      - '#7d8b8f'
+      - '#b23a52'
+      - '#789b6a'
+      - '#b9ac4a'
+      - '#2a7fac'
+      - '#bd4f5a'
+      - '#44a799'
+      - '#d2d8d9'
+      - '#888888'
+      - '#f24840'
+      - '#80c470'
+      - '#ffeb62'
+      - '#4196ff'
+      - '#fc5275'
+      - '#53cdbd'
+      - '#d2d8d9'
+  font: Fira Code
+  customColorSchemes: []
+  showRecentProfiles: 0
+  fontSize: 12
+  profile: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+  showBuiltinProfiles: false
+  fallbackFont: Courier New
+  scrollbackLines: 50000
+  bell: visual
+  autoOpen: false
+  showTabProfileIcon: true
+  cursor: beam
+  lightColorScheme:
+    name: Tabby Default Light
+    foreground: '#4d4d4c'
+    background: '#ffffff'
+    cursor: '#4d4d4c'
+    colors:
+      - '#000000'
+      - '#c82829'
+      - '#718c00'
+      - '#eab700'
+      - '#4271ae'
+      - '#8959a8'
+      - '#3e999f'
+      - '#ffffff'
+      - '#000000'
+      - '#c82829'
+      - '#718c00'
+      - '#eab700'
+      - '#4271ae'
+      - '#8959a8'
+      - '#3e999f'
+      - '#ffffff'
+ssh: {}
+clickableLinks: {}
+accessibility: {}
+appearance:
+  tabsLocation: right
+  frame: full
+hacks: {}
+providerBlacklist: []
+commandBlacklist: []
+language: en-US
+enableWelcomeTab: false
+pluginBlacklist: []
+profileDefaults:
+  ssh:
+    disableDynamicTitle: true
+profileBlacklist: []
+groups: []
+recoverTabs: false
+workspaceManager: {}
+syncConfig:
+  gist: e45f741a404b3818985d724aa27f532f
+  lastSyncTime: '2025-12-19 15:06:02'
+enableAnalytics: false
