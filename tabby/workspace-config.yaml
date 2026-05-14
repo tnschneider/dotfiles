@@ -1,8 +1,20 @@
 - name: WMT CT
   tabs:
     - title: WMT CT Backend
-      color: '#03fccf'
       profile: WMT CT Backend
     - title: WMT CT Mobile
-      color: '#fc036b'
       profile: WMT CT Mobile
+    - title: Repos
+      profile: Repos
+- name: CPW
+  tabs:
+    - title: Platform Docker
+      profile: Platform Docker
+    - title: Platform
+      profile: Platform
+    - title: CPW
+      profile: CPW
+    - title: CPW UI
+      profile: CPW UI
+    - title: Repos
+      profile: Repos
