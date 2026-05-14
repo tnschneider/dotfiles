@@ -1,4 +1,4 @@
-version: 7
+version: 8
 profiles:
   - type: local
     name: 01 Repos
@@ -892,6 +892,7 @@ hotkeys:
     - ⌥-PageUp
   scroll-page-down:
     - ⌥-PageDown
+  open-sftp: []
 terminal:
   searchOptions: {}
   colorScheme:
