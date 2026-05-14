@@ -1,11 +1,3 @@
-- name: WMT CT
-  tabs:
-    - title: WMT CT Backend
-      profile: WMT CT Backend
-    - title: WMT CT Mobile
-      profile: WMT CT Mobile
-    - title: Repos
-      profile: Repos
 - name: CPW
   tabs:
     - title: Platform Docker
@@ -16,5 +8,13 @@
       profile: CPW
     - title: CPW UI
       profile: CPW UI
+    - title: Repos
+      profile: Repos
+- name: WMT CT
+  tabs:
+    - title: WMT CT Backend
+      profile: WMT CT Backend
+    - title: WMT CT Mobile
+      profile: WMT CT Mobile
     - title: Repos
       profile: Repos
