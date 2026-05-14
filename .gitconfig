@@ -9,8 +9,8 @@
 	bl = branch -l
 	ac = "!z() { git add -A && git commit --message=\"$*\"; }; z"
 	po = !git push -u origin $(git rev-parse --abbrev-ref HEAD)
-	mm = "!z() { curr=$(git rev-parse --abbrev-ref HEAD) && git co master && git pull && git co $curr && git merge master; }; z"
-	pr = !git fetch && git diff origin/master
+	mm = "!z() { curr=$(git rev-parse --abbrev-ref HEAD) && git co main && git pull && git co $curr && git merge main; }; z"
+	pr = !git fetch && git diff origin/main
 	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
 	cleanup = !git remote prune origin && git gc
 	delete-branch = branch -D
