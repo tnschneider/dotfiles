@@ -890,9 +890,9 @@ hotkeys:
     - ⌘-Shift-P
   group-selectors: {}
   workspace-profile-1:
-    - ⌘-⌥-1
+    - ⌥-1
   workspace-profile-2:
-    - ⌘-⌥-2
+    - ⌥-2
   workspace-profile-3: []
   workspace-profile-4: []
   workspace-profile-5: []
