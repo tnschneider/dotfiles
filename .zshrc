@@ -390,13 +390,6 @@ if ! command -v dotnet &> /dev/null; then
     brew install --cask dotnet-sdk || echo "Warning: Failed to install dotnet-sdk"
 fi
 
-# Install Oh My Zsh if not exists (optional)
-if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-	echo "Installing Oh My Zsh..."
-	RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
-fi
-
-
 ####################
 ### APPLICATIONS ###
 ####################

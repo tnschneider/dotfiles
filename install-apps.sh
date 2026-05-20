@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Application Installation Script
 # This script installs a comprehensive set of applications for macOS
