@@ -13,8 +13,13 @@
 	pr = !git fetch && git diff origin/main
 	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
 	cleanup = !git remote prune origin && git gc
+	bomb = "!z() { dry_run=false; if [ \"$1\" = '--dry-run' ] || [ \"$1\" = '-n' ]; then dry_run=true; shift; fi; branches=$(git branch | grep -v -E '^\\*|main$|master$|develop$'); if [ -z \"$branches\" ]; then echo 'No branches to delete'; return 0; fi; if $dry_run; then echo 'Would delete:'; echo \"$branches\"; else echo \"$branches\" | xargs -n 1 git branch -D 2>/dev/null; git cleanup; fi; }; z"
 	delete-branch = branch -D
 	stash-all = !git add -A && git stash
+	uncommit = reset --soft HEAD^
+	dm = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs git branch -d && git cleanup"
+	prev = checkout -
+	current = rev-parse --abbrev-ref HEAD
 
 [core]
 	autocrlf = input
