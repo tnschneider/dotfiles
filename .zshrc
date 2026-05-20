@@ -81,6 +81,7 @@ alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
 alias kadprod="kalp 5000"
 alias kadqa="kalp 4000"
+alias s="start"
 
 
 #################
