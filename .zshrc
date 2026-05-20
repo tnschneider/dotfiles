@@ -25,7 +25,7 @@ test -f ~/.zsh_custom && source ~/.zsh_custom
 ###############
 
 if [[ ! -f ~/.antigen.zsh ]]; then
-	curl -L git.io/antigen > ~/.antigen.zsh
+	curl -L https://raw.githubusercontent.com/zsh-users/antigen/develop/bin/antigen.zsh > ~/.antigen.zsh
 fi
 
 source ~/.antigen.zsh
@@ -97,7 +97,49 @@ kalp() {
 }
 
 killgrep() {
-	ps | grep "$*" | grep -v grep | awk -F' ' '{print $1}' | xargs kill
+	local signal=""
+	local pattern=""
+
+	if [[ $1 == "-h" || $1 == "--help" ]]; then
+		echo "Usage: killgrep [-signal] <pattern>"
+		echo "  -h, --help    Show this help message and exit"
+		echo "  -9            Send SIGKILL (force kill)"
+		echo "  -15           Send SIGTERM (graceful, default)"
+		echo "  -HUP          Send SIGHUP (hang up)"
+		echo ""
+		echo "Examples:"
+		echo "  killgrep node       # Kill processes matching 'node' (SIGTERM)"
+		echo "  killgrep -9 node    # Force kill processes matching 'node'"
+		return
+	fi
+
+	if [[ -z $1 ]]; then
+		echo "Usage: killgrep [-signal] <pattern>"
+		return 1
+	fi
+
+	if [[ $1 == -* ]]; then
+		signal="$1"
+		shift
+	fi
+	pattern="$*"
+
+	if [[ -z $pattern ]]; then
+		echo "Error: no pattern specified"
+		return 1
+	fi
+
+	local pids=$(pgrep -f "$pattern")
+	if [[ -z $pids ]]; then
+		echo "No matching processes found"
+		return 1
+	fi
+
+	if [[ -n $signal ]]; then
+		kill "$signal" $pids
+	else
+		kill $pids
+	fi
 }
 
 keep_alive() {
@@ -170,33 +212,42 @@ ct-mobile-launch-two() {
 
 ## Entity Framework Functions
 ef() {
-	if [[ $1 = "mg" || $1 = "migrations" ]]; then
+	if [[ -z $1 || $1 == "-h" || $1 == "--help" ]]; then
+		echo "Usage: ef [migrations|mg|mga|database|db|dbu] [options]"
+		echo "  -h, --help               Show this help message and exit"
+		echo "  migrations, mg <args>    Run \`dotnet ef migrations <args>\`"
+		echo "  mga <name>               Add a new migration with name <name>"
+		echo "  database, db <args>      Run \`dotnet ef database <args>\`"
+		echo "  dbu                      Update the database to the latest migration"
+		echo "  dbu <args>               Run \`dotnet ef database update <args>\`"
+		return
+	fi
+
+	if [[ $1 == "mg" || $1 == "migrations" ]]; then
 		shift
 		dotnet ef migrations "$@" 
 		return;		
 	fi
 
-	if [[ $1 = "mga" ]]; then
+	if [[ $1 == "mga" ]]; then
 		shift
 		dotnet ef migrations add "$@"
 		return;
 	fi
 
-	if [[ $1 = "db" || $1 = "database" ]]; then
+	if [[ $1 == "db" || $1 == "database" ]]; then
 		shift
 		dotnet ef database "$@"
 		return;
 	fi
 
-	if [[ $1 = "dbu" ]]; then
+	if [[ $1 == "dbu" ]]; then
 		shift
 		dotnet ef database update "$@"
 		return;
 	fi
 
 	dotnet ef "$@"
-
-	echo "Usage: ef [migrations|mg|mga|database|db|dbu] [options]"
 }
 
 
@@ -257,7 +308,7 @@ ct() {
 	fi
 
 	if [[ $1 = "web" ]]; then
-		cd "$REPO_HOME/cwalmart-control-tower/ct-app/TrailerTracking.Web"
+		cd "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Web"
 		return;
 	fi
 
@@ -335,17 +386,17 @@ export PATH
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
-export PATH="/Users/terryschneider/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/terryschneider/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 # Add .NET Core SDK tools
-export PATH="$PATH:/Users/terryschneider/.dotnet/tools"
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -364,4 +415,4 @@ unset __conda_setup
 
 
 # Added by Windsurf
-export PATH="/Users/terryschneider/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
