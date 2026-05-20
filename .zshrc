@@ -367,6 +367,37 @@ complete -F _dp_completions dp
 
 
 ####################
+### BOOTSTRAP ###
+####################
+
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if [[ $(uname -m) == "arm64" ]] && [[ -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if ! command -v git &> /dev/null; then
+    brew install git || echo "Warning: Failed to install git"
+fi
+
+if ! command -v node &> /dev/null; then
+    brew install node || echo "Warning: Failed to install node"
+fi
+
+if ! command -v dotnet &> /dev/null; then
+    brew install --cask dotnet-sdk || echo "Warning: Failed to install dotnet-sdk"
+fi
+
+# Install Oh My Zsh if not exists (optional)
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+	echo "Installing Oh My Zsh..."
+	RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+fi
+
+
+####################
 ### APPLICATIONS ###
 ####################
  
