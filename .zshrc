@@ -79,8 +79,6 @@ alias portfind="sudo netstat -nlp | grep"
 alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias kadprod="kalp 5000"
-alias kadqa="kalp 4000"
 alias s="start"
 
 
@@ -88,14 +86,9 @@ alias s="start"
 ### FUNCTIONS ###
 #################
 
-## Utility Functions
-kalp() {
-  while true; do 
-  	nc -z localhost $1; 
-	sleep 10; 
-  done 
-}
+### Utility functions ###
 
+# Kill processes by pattern
 killgrep() {
 	local signal=""
 	local pattern=""
@@ -142,30 +135,37 @@ killgrep() {
 	fi
 }
 
-keep_alive() {
+# Keep a command running in a loop
+keepalive() {
   while true; do
     "$@"
+	sleep 1
   done
 }
 
+# Wait for a key press before executing a command
 anykey() {
 	read -k1 -s REPLY\?"Press any key to execute \"$*\" "
 	case "$REPLY" in 
-		*) eval $*
+		*) eval "$@"
 		;; 
 	esac
 }
 
+# Execute command in STARTCMD env variable
 start() {
 	printf "$STARTCMD\n"
-	eval $STARTCMD
+	eval "$STARTCMD"
 }
 
+# Print the STARTCMD env variable
 printstart() {
 	echo $STARTCMD
 }
 
-## Android Functions
+### Android Functions ###
+
+# Launch an Android emulator
 android() {
 	AVD=$1
 	if [[ -z $AVD ]]; then
@@ -174,6 +174,7 @@ android() {
     ~/Library/Android/sdk/emulator/emulator -avd $AVD
 }
 
+# Launch an Android app on an emulator
 android-launch() {
 	AVD=$1
 	EMULATOR=$2
@@ -191,6 +192,7 @@ android-launch() {
 	adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1 &
 }
 
+# Launch the Control Tower mobile app
 ct-mobile-launch() {
 	android-launch "TC-72"\
 		"emulator-5554"\
@@ -198,6 +200,7 @@ ct-mobile-launch() {
 		"com.firebend.controltower" &
 }
 
+# Launch two instances of the Control Tower mobile app
 ct-mobile-launch-two() {
 	android-launch "TC-72"\
 		"emulator-5554"\
@@ -210,7 +213,9 @@ ct-mobile-launch-two() {
 		"com.firebend.controltower" &
 }
 
-## Entity Framework Functions
+### Entity Framework Functions ###
+
+# Run Entity Framework commands
 ef() {
 	if [[ -z $1 || $1 == "-h" || $1 == "--help" ]]; then
 		echo "Usage: ef [migrations|mg|mga|database|db|dbu] [options]"
@@ -356,8 +361,6 @@ dp() {
 	cd "$REPO_HOME/data-pipelines/$1"
 }
 
-
-
 _dp_completions()
 {
   COMPREPLY=($(compgen -W "walmart platform infra" -- "${COMP_WORDS[COMP_CWORD]}"))
@@ -366,9 +369,9 @@ _dp_completions()
 complete -F _dp_completions dp
 
 
-####################
+#################
 ### BOOTSTRAP ###
-####################
+#################
 
 if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -390,27 +393,53 @@ if ! command -v dotnet &> /dev/null; then
     brew install --cask dotnet-sdk || echo "Warning: Failed to install dotnet-sdk"
 fi
 
+if ! command -v pyenv &> /dev/null; then
+    brew install pyenv || echo "Warning: Failed to install pyenv"
+    export PATH="$(brew --prefix pyenv)/shims:$(brew --prefix pyenv)/bin:$PATH"
+    pyenv install -s 3.12
+    pyenv global 3.12
+fi
+
+if ! command -v pnpm &> /dev/null; then
+    brew install pnpm || echo "Warning: Failed to install pnpm"
+fi
+
+if ! command -v az &> /dev/null; then
+    brew install azure-cli || echo "Warning: Failed to install azure-cli"
+fi
+
+if ! command -v kubectl &> /dev/null; then
+    brew install kubectl || echo "Warning: Failed to install kubectl"
+fi
+
+if ! command -v helm &> /dev/null; then
+    brew install helm || echo "Warning: Failed to install helm"
+fi
+
+if command -v corepack &> /dev/null && ! command -v yarn &> /dev/null; then
+    corepack enable yarn || echo "Warning: Failed to enable yarn via corepack"
+fi
+
 ####################
 ### APPLICATIONS ###
 ####################
  
+# yarn
 export PATH=$PATH:~/.yarn/bin
 
+# local bin
+export PATH="$HOME/.local/bin:$PATH"
 
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
-# Setting PATH for Python 3.5
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
-export PATH
-
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-
-export PATH="$HOME/.local/bin:$PATH"
+# pyenv
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+fi
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
@@ -419,24 +448,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
 # Add .NET Core SDK tools
 export PATH="$PATH:$HOME/.dotnet/tools"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 
 # Added by Windsurf
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"

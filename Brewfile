@@ -1,9 +1,6 @@
 # Homebrew Bundle
 # Install everything with: brew bundle
 
-# Formulae
-brew "python@3.12"
-
 # Casks
 cask "alfred"
 cask "android-studio"
@@ -23,7 +20,9 @@ cask "microsoft-outlook"
 cask "microsoft-powerpoint"
 cask "microsoft-teams"
 cask "microsoft-word"
+cask "notion"
 cask "postman"
+cask "raycast"
 cask "rectangle"
 cask "redis-insight"
 cask "rider"
