@@ -1,8 +1,12 @@
 # Homebrew Bundle
 # Install everything with: brew bundle
+# Note: MSSQL tools are installed separately in install-apps.sh due to interactive EULA prompts
+
+# Formulae
+brew "mongodb-database-tools"
+brew "mongosh"
 
 # Casks
-cask "alfred"
 cask "android-studio"
 cask "apidog"
 cask "bitwarden"
@@ -11,7 +15,7 @@ cask "cleanshot"
 cask "cold-turkey-blocker"
 cask "datagrip"
 cask "displaylink"
-cask "docker"
+cask "docker-desktop"
 cask "firefox"
 cask "keepingyouawake"
 cask "lens"
@@ -27,6 +31,8 @@ cask "rectangle"
 cask "redis-insight"
 cask "rider"
 cask "slack"
+cask "snowflake-cli"
+cask "snowflake-snowsql"
 cask "spotify"
 cask "studio-3t"
 cask "sublime-merge"
@@ -34,7 +40,7 @@ cask "sublime-text"
 cask "tabby"
 cask "telegram"
 cask "the-unarchiver"
-cask "todoist"
+cask "utm"
 cask "visual-studio-code"
 cask "webstorm"
 cask "windsurf"

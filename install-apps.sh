@@ -13,6 +13,10 @@ if ! command -v brew &>/dev/null; then
     exit 1
 fi
 
+# Install these here due to interactive EULA prompts
+brew tap microsoft/mssql-release
+brew install msodbcsql18 mssql-tools18 sqlcmd
+
 echo "[INFO] Installing applications from Brewfile..."
 brew bundle --file="$SCRIPT_DIR/Brewfile"
 echo "[SUCCESS] Installation completed!"
