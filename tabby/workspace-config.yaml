@@ -1,3 +1,7 @@
+- name: Repos
+  tabs:
+    - title: Repos
+      profile: Repos
 - name: CPW
   tabs:
     - title: Platform Docker

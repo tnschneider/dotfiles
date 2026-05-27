@@ -890,12 +890,15 @@ hotkeys:
     - ⌘-Shift-P
   group-selectors: {}
   workspace-profile-1:
-    - ⌥-1
+    - ⌥-R
   workspace-profile-2:
+    - ⌥-1
+  workspace-profile-3:
     - ⌥-2
-  workspace-profile-3: []
-  workspace-profile-4: []
-  workspace-profile-5: []
+  workspace-profile-4:
+    - ⌥-3
+  workspace-profile-5:
+    - ⌥-4
   scroll-page-up:
     - ⌥-PageUp
   scroll-page-down:
