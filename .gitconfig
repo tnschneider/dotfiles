@@ -20,6 +20,8 @@
 	dm = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs git branch -d && git cleanup"
 	prev = checkout -
 	current = rev-parse --abbrev-ref HEAD
+	wip = !git add -A && git commit -m "WIP"
+	main = !git checkout main
 
 [core]
 	autocrlf = input
