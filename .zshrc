@@ -80,6 +80,7 @@ alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
 alias s="start"
+alias home="cd ~"
 
 
 #################
