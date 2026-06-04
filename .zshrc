@@ -27,7 +27,8 @@ antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle extract
 
 antigen apply
-add-zsh-hook -D precmd _antigen_compinit
+
+# we must call compinit after antigen apply since antigen does some weird stuff with completions
 compinit -C
 
 
