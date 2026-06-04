@@ -16,6 +16,11 @@ compinit
 autoload bashcompinit
 bashcompinit
 
+# pnpm completion (includes package.json script names for `pnpm run`)
+if command -v pnpm >/dev/null 2>&1; then
+	eval "$(pnpm completion zsh)"
+fi
+
 # Load custom script per environment
 test -f ~/.zsh_custom && source ~/.zsh_custom
 
@@ -387,11 +392,15 @@ if ! command -v git &> /dev/null; then
 fi
 
 if ! command -v node &> /dev/null; then
-    brew install node || echo "Warning: Failed to install node"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+	\. "$HOME/.nvm/nvm.sh"
+	nvm install 20.19.6 || echo "Warning: Failed to install Node.js via nvm"
+	nvm install 22
+	nvm alias default 20.19.6
 fi
 
 if ! command -v dotnet &> /dev/null; then
-    brew install --cask dotnet-sdk || echo "Warning: Failed to install dotnet-sdk"
+    curl -fsSL https://dot.net/v1/dotnet-install.sh | bash || echo "Warning: Failed to install dotnet-sdk"
 fi
 
 if ! command -v pyenv &> /dev/null; then
@@ -402,7 +411,7 @@ if ! command -v pyenv &> /dev/null; then
 fi
 
 if ! command -v pnpm &> /dev/null; then
-    brew install pnpm || echo "Warning: Failed to install pnpm"
+    brew install "pnpm@10" || echo "Warning: Failed to install pnpm"
 fi
 
 if ! command -v az &> /dev/null; then
@@ -421,6 +430,15 @@ if command -v corepack &> /dev/null && ! command -v yarn &> /dev/null; then
     corepack enable yarn || echo "Warning: Failed to enable yarn via corepack"
 fi
 
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if command -v nvm >/dev/null 2>&1; then
+	nvm use --silent default >/dev/null 2>&1
+fi
+
 ####################
 ### APPLICATIONS ###
 ####################
@@ -430,11 +448,6 @@ export PATH=$PATH:~/.yarn/bin
 
 # local bin
 export PATH="$HOME/.local/bin:$PATH"
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pyenv
 if command -v pyenv &> /dev/null; then
