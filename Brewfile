@@ -5,6 +5,9 @@
 # Formulae
 brew "mongodb-database-tools"
 brew "mongosh"
+brew "ripgrep"
+brew "jq"
+brew "yq"
 
 # Casks
 cask "android-studio"
