@@ -1,0 +1,91 @@
+# platform
+PLATFORM_HOME="$REPO_HOME"
+PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
+test -f $PF_SH_EXT && source $PF_SH_EXT
+
+# control tower legacy
+ct() {
+  local -A dirs=(
+    devs       "$REPO_HOME/walmart-control-tower/ct-developers"
+    developers "$REPO_HOME/walmart-control-tower/ct-developers"
+    mobile     "$REPO_HOME/walmart-control-tower/mobile-app"
+    modules    "$REPO_HOME/ct/ct-modules"
+    test       "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Test"
+    tests      "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Test"
+    web        "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Web"
+    worker     "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Worker"
+    api-tests  "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.ApiTests"
+  )
+  [[ -n $1 ]] && cd "${dirs[$1]:-$REPO_HOME/control-tower-walmart/$1}" || cd "$REPO_HOME/walmart-control-tower"
+}
+
+_ct_completions() {
+  compadd devs developers mobile modules test tests web worker api-tests
+}
+
+compdef _ct_completions ct
+
+# data pipelines
+dp() {
+  local -A dirs=(
+    walmart  "$REPO_HOME/data-pipelines/ct-walmart-data-pipeline"
+    platform "$REPO_HOME/data-pipelines/platform-data-pipeline"
+    infra    "$REPO_HOME/data-pipelines/firebend-dagster-infrastructure"
+  )
+  cd "${dirs[$1]:-$REPO_HOME/data-pipelines${1:+/$1}}"
+}
+
+_dp_completions() {
+  compadd walmart platform infra
+}
+
+compdef _dp_completions dp
+
+
+# Launch an Android emulator
+android() {
+	AVD=$1
+	if [[ -z $AVD ]]; then
+		AVD="TC-72"
+	fi
+    ~/Library/Android/sdk/emulator/emulator -avd $AVD
+}
+
+# Launch an Android app on an emulator
+android-launch() {
+	AVD=$1
+	EMULATOR=$2
+	APK_PATH=$3
+	PACKAGE_NAME=$4
+	~/Library/Android/sdk/emulator/emulator -avd $AVD > /dev/null 2>&1 &
+	adb -s $EMULATOR wait-for-device
+	BOOT_COMPLETED=""
+	while [ "$BOOT_COMPLETED" != "1" ]; do
+		BOOT_COMPLETED=$(adb -s $EMULATOR shell getprop sys.boot_completed | tr -d '\r')
+		sleep 1
+	done
+	adb -s $EMULATOR install -r $APK_PATH > /dev/null 2>&1
+	sleep 1
+	adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1 &
+}
+
+# Launch the Control Tower mobile app
+ct-mobile-launch() {
+	android-launch "TC-72"\
+		"emulator-5554"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
+		"com.firebend.controltower" &
+}
+
+# Launch two instances of the Control Tower mobile app
+ct-mobile-launch-two() {
+	android-launch "TC-72"\
+		"emulator-5554"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
+		"com.firebend.controltower" &
+
+	android-launch "TC-72_2"\
+		"emulator-5556"\
+		~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk\
+		"com.firebend.controltower" &
+}

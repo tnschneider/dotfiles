@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/bin/zsh
 set -e
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
 rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
+rm -f ~/.zshrc.fb && ln -s "$DOTFILES/.zshrc.fb" ~/.zshrc.fb
 
 mkdir -p "$HOME/Library/Application Support/tabby"
 rm -f "$HOME/Library/Application Support/tabby/config.yaml" \
@@ -63,5 +64,3 @@ fi
 if command -v corepack &> /dev/null && ! command -v yarn &> /dev/null; then
     corepack enable yarn || echo "Warning: Failed to enable yarn via corepack"
 fi
-
-source ~/.zshrc || true
