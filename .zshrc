@@ -76,6 +76,12 @@ printstart() {
 	echo $STARTCMD
 }
 
+# Launch an Android emulator
+android() {
+	AVD=$1
+    ~/Library/Android/sdk/emulator/emulator -avd $AVD
+}
+
 
 #################
 ### SHORTCUTS ###

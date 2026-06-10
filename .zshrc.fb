@@ -41,16 +41,6 @@ _dp_completions() {
 
 compdef _dp_completions dp
 
-
-# Launch an Android emulator
-android() {
-	AVD=$1
-	if [[ -z $AVD ]]; then
-		AVD="TC-72"
-	fi
-    ~/Library/Android/sdk/emulator/emulator -avd $AVD
-}
-
 # Launch an Android app on an emulator
 android-launch() {
 	AVD=$1
