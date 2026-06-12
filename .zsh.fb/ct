@@ -1,0 +1,12 @@
+local -A dirs=(
+    devs       "$REPO_HOME/walmart-control-tower/ct-developers"
+    developers "$REPO_HOME/walmart-control-tower/ct-developers"
+    mobile     "$REPO_HOME/walmart-control-tower/mobile-app"
+    modules    "$REPO_HOME/ct/ct-modules"
+    test       "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Test"
+    tests      "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Test"
+    web        "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Web"
+    worker     "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.Worker"
+    api-tests  "$REPO_HOME/walmart-control-tower/ct-app/TrailerTracking.ApiTests"
+)
+[[ -n $1 ]] && cd "${dirs[$1]:-$REPO_HOME/control-tower-walmart/$1}" || cd "$REPO_HOME/walmart-control-tower"

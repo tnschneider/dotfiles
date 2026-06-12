@@ -1,0 +1,3 @@
+#compdef dp
+
+compadd walmart platform infra

@@ -1,0 +1,3 @@
+#compdef repo
+
+compadd -- "$REPO_HOME"/*(/:t)

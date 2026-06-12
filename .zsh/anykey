@@ -1,0 +1,5 @@
+read -k1 -s REPLY\?"Press any key to execute \"$*\" "
+case "$REPLY" in
+    *) eval "$@"
+    ;;
+esac

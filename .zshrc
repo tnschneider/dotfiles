@@ -3,27 +3,15 @@ HISTSIZE=50000
 SAVEHIST=50000
 bindkey -e
 
-fpath=(~/.zsh $fpath)
 
-autoload -Uz compinit
-
-compinit -C
-
-
-################
 ### ENV VARS ###
-################
-
 export ASPNETCORE_ENVIRONMENT="Development"
 export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
 export REPO_HOME="$HOME/Repos"
 
 
-###############
 ### ALIASES ###
-###############
-
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -44,95 +32,28 @@ alias s="start"
 alias home="cd ~"
 
 
-#################
-### FUNCTIONS ###
-#################
+### FUNCTIONS AND COMPLETIONS ###
 
-# Keep a command running in a loop
-keepalive() {
-	while true; do
-		"$@"
-		sleep 1
-	done
-}
+fpath=(~/.zsh $fpath)
 
-# Wait for a key press before executing a command
-anykey() {
-	read -k1 -s REPLY\?"Press any key to execute \"$*\" "
-	case "$REPLY" in 
-		*) eval "$@"
-		;; 
-	esac
-}
+autoload -Uz funcinit compinit
 
-# Execute command in STARTCMD env variable
-start() {
-	printf "$STARTCMD\n"
-	eval "$STARTCMD"
-}
-
-# Print the STARTCMD env variable
-printstart() {
-	echo $STARTCMD
-}
-
-# Launch an Android emulator
-android() {
-	AVD=$1
-    ~/Library/Android/sdk/emulator/emulator -avd $AVD
-}
-
-
-#################
-### SHORTCUTS ###
-#################
-
-# repos
-repo() {
-	cd "$REPO_HOME/$1"
-}
-
-_repo_completions() {
-  compadd -- "$REPO_HOME"/*(/:t)
-}
-
-compdef _repo_completions repo
-
-
-# dotnet ef shorthand: mg[a] = migrations [add], db[u] = database [update]
-ef() {
-	local cmd=$1; shift
-	case $cmd in
-		mg|migrations)  dotnet ef migrations "$@" ;;
-		mga)            dotnet ef migrations add "$@" ;;
-		db|database)    dotnet ef database "$@" ;;
-		dbu)            dotnet ef database update "$@" ;;
-		-h|--help|"")   echo "Usage: ef [mg|mga|db|dbu] [args]
-  mg, migrations   dotnet ef migrations <args>
-  mga <name>       dotnet ef migrations add <name>
-  db, database     dotnet ef database <args>
-  dbu [args]       dotnet ef database update [args]" ;;
-		*)              dotnet ef "$cmd" "$@" ;;
-	esac
-}
-
-_ef_completions() {
-	compadd mg migrations mga db database dbu
-}
-
-compdef _ef_completions ef
-
-############################
-### ENVIRONMENT-SPECIFIC ###
-############################
+funcinit ~/.zsh
 
 # Firebend
-test -f ~/.zshrc.fb && source ~/.zshrc.fb
+fpath=(~/.zsh.fb $fpath)
+
+funcinit ~/.zsh.fb
+
+compinit -C
+
+# Platform extensions
+PLATFORM_HOME="$REPO_HOME"
+PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
+test -f $PF_SH_EXT && source $PF_SH_EXT
 
 
-###########################
 ### SHELL CUSTOMIZATION ###
-###########################
 
 # antigen
 if [[ ! -f ~/.antigen.zsh ]]; then
@@ -157,10 +78,8 @@ fi
 eval "$(starship init zsh)"
 
 
-####################
 ### APPLICATIONS ###
-####################
- 
+
 # yarn
 export PATH=$PATH:~/.yarn/bin
 

@@ -1,0 +1,13 @@
+local cmd=$1; shift
+case $cmd in
+    mg|migrations)  dotnet ef migrations "$@" ;;
+    mga)            dotnet ef migrations add "$@" ;;
+    db|database)    dotnet ef database "$@" ;;
+    dbu)            dotnet ef database update "$@" ;;
+    -h|--help|"")   echo "Usage: ef [mg|mga|db|dbu] [args]
+mg, migrations   dotnet ef migrations <args>
+mga <name>       dotnet ef migrations add <name>
+db, database     dotnet ef database <args>
+dbu [args]       dotnet ef database update [args]" ;;
+    *)              dotnet ef "$cmd" "$@" ;;
+esac

@@ -1,0 +1,2 @@
+AVD=$1
+~/Library/Android/sdk/emulator/emulator -avd $AVD

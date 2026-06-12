@@ -1,0 +1,6 @@
+local -A dirs=(
+    walmart  "$REPO_HOME/data-pipelines/ct-walmart-data-pipeline"
+    platform "$REPO_HOME/data-pipelines/platform-data-pipeline"
+    infra    "$REPO_HOME/data-pipelines/firebend-dagster-infrastructure"
+)
+cd "${dirs[$1]:-$REPO_HOME/data-pipelines${1:+/$1}}"

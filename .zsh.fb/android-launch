@@ -1,0 +1,14 @@
+AVD=$1
+EMULATOR=$2
+APK_PATH=$3
+PACKAGE_NAME=$4
+~/Library/Android/sdk/emulator/emulator -avd $AVD > /dev/null 2>&1 &
+adb -s $EMULATOR wait-for-device
+BOOT_COMPLETED=""
+while [ "$BOOT_COMPLETED" != "1" ]; do
+    BOOT_COMPLETED=$(adb -s $EMULATOR shell getprop sys.boot_completed | tr -d '\r')
+    sleep 1
+done
+adb -s $EMULATOR install -r $APK_PATH > /dev/null 2>&1
+sleep 1
+adb -s $EMULATOR shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1 &

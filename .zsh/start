@@ -1,0 +1,2 @@
+printf "$STARTCMD\n"
+eval "$STARTCMD"
