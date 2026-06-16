@@ -1,0 +1,271 @@
+_dcmd_file="$HOME/.dcmd"
+
+_dcmd_is_valid_name() {
+  [[ "$1" =~ '^[A-Za-z_][A-Za-z0-9_]*$' ]]
+}
+
+_dcmd_is_reserved_name() {
+  case "$1" in
+    add|remove|exec|list|list-all|help)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+_dcmd_validate_command_name() {
+  local name="$1"
+
+  if ! _dcmd_is_valid_name "$name"; then
+    echo "dcmd: invalid name '$name' (must match zsh variable name rules)" >&2
+    return 1
+  fi
+
+  if _dcmd_is_reserved_name "$name"; then
+    echo "dcmd: invalid name '$name' (reserved built-in command name)" >&2
+    return 1
+  fi
+
+  return 0
+}
+
+_dcmd_usage() {
+  echo "Usage:"
+  echo "  dcmd exec <name>"
+  echo "  dcmd <name>"
+  echo "  dcmd list"
+  echo "  dcmd list-all"
+  echo "  dcmd add <name> <command ...>"
+  echo "  dcmd remove <name>"
+  echo ""
+  echo "File format: /path/to:command_name:echo 'hello'"
+}
+
+_dcmd_expand_path() {
+  local raw_path="$1"
+  local expanded_path="${raw_path/#\~/$HOME}"
+  expanded_path="${(e)expanded_path}"
+  echo "$expanded_path"
+}
+
+_dcmd_ensure_file() {
+  if [[ ! -f "$_dcmd_file" ]]; then
+    echo "# Format: /path/to:command_name:command" > "$_dcmd_file"
+  fi
+}
+
+_dcmd_exec() {
+  local target_name="$1"
+  local line raw_path rest name cmd expanded_path
+
+  while IFS= read -r line; do
+    [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
+
+    raw_path="${line%%:*}"
+    rest="${line#*:}"
+    name="${rest%%:*}"
+    cmd="${rest#*:}"
+
+    expanded_path="$(_dcmd_expand_path "$raw_path")"
+    if [[ "$expanded_path" == "$PWD" && "$name" == "$target_name" ]]; then
+      eval "$cmd"
+      return $?
+    fi
+  done < "$_dcmd_file"
+
+  echo "dcmd: no command named '$target_name' for $PWD" >&2
+  return 1
+}
+
+_dcmd_add() {
+  local name="$1"
+  shift
+
+  if [[ $# -eq 0 ]]; then
+    echo "dcmd: missing command to add" >&2
+    _dcmd_usage
+    return 1
+  fi
+
+  if ! _dcmd_validate_command_name "$name"; then
+    return 1
+  fi
+
+  local cmd="${(j: :)@}"
+  local tmp_file
+  tmp_file="$(mktemp)" || return 1
+
+  local line raw_path rest existing_name expanded_path
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+
+    if [[ "${line#\#}" != "$line" ]]; then
+      echo "$line" >> "$tmp_file"
+      continue
+    fi
+
+    raw_path="${line%%:*}"
+    rest="${line#*:}"
+    existing_name="${rest%%:*}"
+    expanded_path="$(_dcmd_expand_path "$raw_path")"
+
+    # Replace any existing command with the same path+name.
+    if [[ "$expanded_path" == "$PWD" && "$existing_name" == "$name" ]]; then
+      continue
+    fi
+
+    echo "$line" >> "$tmp_file"
+  done < "$_dcmd_file"
+
+  echo "$PWD:$name:$cmd" >> "$tmp_file"
+  mv "$tmp_file" "$_dcmd_file"
+
+  echo "dcmd: added '$name' for $PWD"
+}
+
+_dcmd_remove() {
+  local name="$1"
+
+  if ! _dcmd_validate_command_name "$name"; then
+    return 1
+  fi
+
+  local tmp_file
+  tmp_file="$(mktemp)" || return 1
+
+  local removed=0
+  local line raw_path rest existing_name expanded_path
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+
+    if [[ "${line#\#}" != "$line" ]]; then
+      echo "$line" >> "$tmp_file"
+      continue
+    fi
+
+    raw_path="${line%%:*}"
+    rest="${line#*:}"
+    existing_name="${rest%%:*}"
+    expanded_path="$(_dcmd_expand_path "$raw_path")"
+
+    if [[ "$expanded_path" == "$PWD" && "$existing_name" == "$name" ]]; then
+      removed=1
+      continue
+    fi
+
+    echo "$line" >> "$tmp_file"
+  done < "$_dcmd_file"
+
+  mv "$tmp_file" "$_dcmd_file"
+
+  if [[ $removed -eq 1 ]]; then
+    echo "dcmd: removed '$name' for $PWD"
+    return 0
+  fi
+
+  echo "dcmd: no command named '$name' for $PWD" >&2
+  return 1
+}
+
+_dcmd_list() {
+  local line raw_path rest name cmd expanded_path
+  local found=0
+
+  while IFS= read -r line; do
+    [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
+
+    raw_path="${line%%:*}"
+    rest="${line#*:}"
+    name="${rest%%:*}"
+    cmd="${rest#*:}"
+    expanded_path="$(_dcmd_expand_path "$raw_path")"
+
+    if [[ "$expanded_path" == "$PWD" ]]; then
+      echo "$name:$cmd"
+      found=1
+    fi
+  done < "$_dcmd_file"
+
+  if [[ $found -eq 0 ]]; then
+    echo "dcmd: no commands for $PWD"
+  fi
+}
+
+_dcmd_list_all() {
+  local line
+  local found=0
+
+  while IFS= read -r line; do
+    [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
+    echo "$line"
+    found=1
+  done < "$_dcmd_file"
+
+  if [[ $found -eq 0 ]]; then
+    echo "dcmd: no commands found"
+  fi
+}
+
+_dcmd_ensure_file
+
+case "$1" in
+  add)
+    shift
+    if [[ $# -lt 2 ]]; then
+      echo "dcmd: usage is dcmd add <name> <command ...>" >&2
+      return 1
+    fi
+    _dcmd_add "$1" "${@:2}"
+    ;;
+  remove)
+    shift
+    if [[ $# -ne 1 ]]; then
+      echo "dcmd: usage is dcmd remove <name>" >&2
+      return 1
+    fi
+    _dcmd_remove "$1"
+    ;;
+  exec)
+    shift
+    if [[ $# -ne 1 ]]; then
+      echo "dcmd: usage is dcmd exec <name>" >&2
+      return 1
+    fi
+    if ! _dcmd_validate_command_name "$1"; then
+      return 1
+    fi
+    _dcmd_exec "$1"
+    ;;
+  list)
+    shift
+    if [[ $# -ne 0 ]]; then
+      echo "dcmd: usage is dcmd list" >&2
+      return 1
+    fi
+    _dcmd_list
+    ;;
+  list-all)
+    shift
+    if [[ $# -ne 0 ]]; then
+      echo "dcmd: usage is dcmd list-all" >&2
+      return 1
+    fi
+    _dcmd_list_all
+    ;;
+  help|-h|--help|"")
+    _dcmd_usage
+    ;;
+  *)
+    if [[ "${1:0:1}" == "-" ]]; then
+      echo "dcmd: unknown option '$1'" >&2
+      _dcmd_usage
+      return 1
+    fi
+    if ! _dcmd_validate_command_name "$1"; then
+      return 1
+    fi
+    _dcmd_exec "$1"
+    ;;
+esac

@@ -28,7 +28,9 @@ alias portfind="sudo lsof -i -P | grep"
 alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias s="start"
+alias start="dcmd exec start"
+alias s="dcmd exec start"
+alias t="dcmd exec test"
 alias home="cd ~"
 
 
@@ -76,9 +78,6 @@ then
 fi
 
 eval "$(starship init zsh)"
-
-startcmds
-
 
 ### APPLICATIONS ###
 
