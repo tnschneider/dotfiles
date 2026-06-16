@@ -1,3 +1,3 @@
-_keepalive_plugin_dir="${0:A:h}"
-fpath=("$_keepalive_plugin_dir" $fpath)
+_plugin_dir="${0:A:h}"
+fpath=("$_plugin_dir" $fpath)
 autoload -Uz keepalive

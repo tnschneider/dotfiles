@@ -27,13 +27,15 @@ if ! command -v git &> /dev/null; then
     brew install git || echo "Warning: Failed to install git"
 fi
 
-# nvm/node
-if [[ ! -d "$HOME/.nvm" ]]; then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-    \. "$HOME/.nvm/nvm.sh"
-    nvm install 20.19.6
-    nvm install 22
-    nvm alias default 20.19.6
+# fnm/node
+if ! command -v fnm &> /dev/null; then
+    brew install fnm || echo "Warning: Failed to install fnm"
+fi
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env)"
+    fnm install 20.19.6 || echo "Warning: Failed to install Node 20.19.6"
+    fnm install 22 || echo "Warning: Failed to install Node 22"
+    fnm default 20.19.6 || echo "Warning: Failed to set default Node version to 20.19.6"
 fi
 
 # dotnet

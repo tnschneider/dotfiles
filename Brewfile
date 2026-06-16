@@ -1,6 +1,8 @@
 # Homebrew Bundle
 # Install everything with: brew bundle
-# Note: MSSQL tools are installed separately in install-apps.sh due to interactive EULA prompts
+
+# Taps
+tap "microsoft/mssql-release"
 
 # Formulae
 brew "flyway"
@@ -8,8 +10,11 @@ brew "helm"
 brew "jq"
 brew "mongodb-database-tools"
 brew "mongosh"
+brew "msodbcsql18"
+brew "mssql-tools18"
 brew "ripgrep"
 brew "snowflake-cli"
+brew "sqlcmd"
 brew "yq"
 
 # Casks
