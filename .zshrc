@@ -66,7 +66,6 @@ antigen bundle agkozak/zsh-z
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle extract
-antigen bundle dotnet
 
 antigen apply
 

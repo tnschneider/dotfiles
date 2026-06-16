@@ -23,26 +23,28 @@
 	wip = !git add -A && git commit -m "WIP"
 	main = !git checkout main
 
+[color]
+	ui = auto
 [core]
 	autocrlf = input
 	editor = nano
-[merge]
-	tool = smerge
-[diff]
-	tool = smerge
-[difftool "smerge"]
-	cmd = smerge .
-	prompt = false
-[mergetool]
-	trustExitCode = true
-	prompt = false
-	keepBackup = false
-[mergetool "smerge"]
-	cmd = smerge mergetool "$BASE" "$LOCAL" "$REMOTE" - "$MERGED"
 [credential]
 	helper = osxkeychain
+[diff]
+	algorithm = histogram
+[fetch]
+	prune = true
+[http]
+	postBuffer = 104857600
+[merge]
+	conflictstyle = zdiff3
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+	keepBackup = false
+[pull]
+	rebase = true
 [push]
 	autoSetupRemote = true
-[http]
-	version = HTTP/1.1
-	postBuffer = 157286400
+[rerere]
+	enabled = true

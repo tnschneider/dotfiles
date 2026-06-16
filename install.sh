@@ -85,11 +85,6 @@ if ! command -v kubectl &> /dev/null; then
     brew install kubectl || echo "Warning: Failed to install kubectl"
 fi
 
-# helm
-if ! command -v helm &> /dev/null; then
-    brew install helm || echo "Warning: Failed to install helm"
-fi
-
 # yarn
 if command -v corepack &> /dev/null && ! command -v yarn &> /dev/null; then
     corepack enable yarn || echo "Warning: Failed to enable yarn via corepack"
