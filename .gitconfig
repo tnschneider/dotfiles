@@ -42,8 +42,6 @@
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
 	keepBackup = false
-[pull]
-	rebase = true
 [push]
 	autoSetupRemote = true
 [rerere]
