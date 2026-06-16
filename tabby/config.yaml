@@ -41,8 +41,7 @@ profiles:
                       - '--login'
                     cwd: >-
                       /Users/terryschneider/Repos/walmart-control-tower/ct-developers
-                    env:
-                      STARTCMD: docker compose up
+                    env: {}
                     width: null
                     height: null
                     pauseAfterExit: false
@@ -71,8 +70,7 @@ profiles:
                     args:
                       - '--login'
                     cwd: /Users/terryschneider/Repos/walmart-control-tower
-                    env:
-                      STARTCMD: pnpm run serve:ct-web-and-worker
+                    env: {}
                     width: null
                     height: null
                     pauseAfterExit: false
@@ -107,6 +105,7 @@ profiles:
                     args:
                       - '--login'
                     cwd: /Users/terryschneider/Repos/walmart-control-tower
+                    env: {}
                     width: null
                     height: null
                     pauseAfterExit: false
@@ -185,8 +184,7 @@ profiles:
                       - '--login'
                     cwd: >-
                       /Users/terryschneider/Repos/walmart-control-tower/mobile-app/src/ControlTowerMobile.Api.Client
-                    env:
-                      STARTCMD: ./nswag-build.sh
+                    env: {}
                     width: null
                     height: null
                     pauseAfterExit: false
@@ -455,8 +453,7 @@ profiles:
       args:
         - '--login'
       cwd: /Users/terryschneider/Repos/ct-platform/platform-developers
-      env:
-        STARTCMD: docker compose up
+      env: {}
       width: null
       height: null
       pauseAfterExit: false
@@ -491,8 +488,7 @@ profiles:
                 args:
                   - '--login'
                 cwd: /Users/terryschneider/Repos/ct-platform
-                env:
-                  STARTCMD: pnpm run serve:all
+                env: {}
                 width: null
                 height: null
                 pauseAfterExit: false
@@ -601,8 +597,7 @@ profiles:
                   - '--login'
                 cwd: >-
                   /Users/terryschneider/Repos/ct-platform/client-apps/Cpw/Client.Cpw.Api
-                env:
-                  STARTCMD: dotnet watch run
+                env: {}
                 width: null
                 height: null
                 pauseAfterExit: false
@@ -674,8 +669,7 @@ profiles:
                 args:
                   - '--login'
                 cwd: /Users/terryschneider/Repos/platform-ui
-                env:
-                  STARTCMD: pnpm serve:cpw
+                env: {}
                 width: null
                 height: null
                 pauseAfterExit: false
