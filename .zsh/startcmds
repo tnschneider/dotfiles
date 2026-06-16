@@ -1,0 +1,25 @@
+_startcmds_file="$HOME/.startcmds"
+_update_startcmd() {
+  if [[ -f "$_startcmds_file" ]]; then
+    local match
+    match=$(while IFS= read -r line; do
+      local raw_path="${line%%:*}"
+      local expanded_path="${raw_path/#\~/$HOME}"
+      expanded_path="${(e)expanded_path}"
+      if [[ "$expanded_path" == "$PWD" ]]; then
+        echo "$line"
+        break
+      fi
+    done < "$_startcmds_file")
+    if [[ -n "$match" ]]; then
+      export STARTCMD="${match#*: }"
+    else
+      unset STARTCMD
+    fi
+  else
+    echo "# Format: /path/to/directory: command to run" > "$_startcmds_file"
+  fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _update_startcmd
+_update_startcmd

@@ -57,7 +57,7 @@ test -f $PF_SH_EXT && source $PF_SH_EXT
 
 # antigen
 if [[ ! -f ~/.antigen.zsh ]]; then
-	curl -L https://raw.githubusercontent.com/zsh-users/antigen/develop/bin/antigen.zsh > ~/.antigen.zsh
+	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
 fi
 
 source ~/.antigen.zsh
@@ -66,6 +66,7 @@ antigen bundle agkozak/zsh-z
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle extract
+antigen bundle dotnet
 
 antigen apply
 
@@ -76,6 +77,8 @@ then
 fi
 
 eval "$(starship init zsh)"
+
+startcmds
 
 
 ### APPLICATIONS ###
