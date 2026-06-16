@@ -1,0 +1,78 @@
+#compdef dcmd
+
+_dcmd_file="$HOME/.dcmd"
+_dcmd_reserved_names=(add remove exec list list-all help)
+
+_dcmd_expand_path_for_completion() {
+  local raw_path="$1"
+  local expanded_path="${raw_path/#\~/$HOME}"
+  expanded_path="${(e)expanded_path}"
+  echo "$expanded_path"
+}
+
+_dcmd_current_dir_names() {
+  local line raw_path rest name expanded_path
+  local -a names
+  local -A seen
+
+  [[ -f "$_dcmd_file" ]] || return 0
+
+  while IFS= read -r line; do
+    [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
+
+    raw_path="${line%%:*}"
+    rest="${line#*:}"
+    name="${rest%%:*}"
+    expanded_path="$(_dcmd_expand_path_for_completion "$raw_path")"
+
+    [[ "$expanded_path" == "$PWD" ]] || continue
+    [[ -n "$name" ]] || continue
+
+    if [[ -z "${seen[$name]}" ]]; then
+      names+=("$name")
+      seen[$name]=1
+    fi
+  done < "$_dcmd_file"
+
+  compadd -- "$@" "$names[@]"
+}
+
+_dcmd_subcommands() {
+  compadd -- add remove exec list list-all help
+}
+
+_dcmd() {
+  local -a subcommands
+  subcommands=(add remove exec list list-all help)
+
+  if (( CURRENT == 2 )); then
+    _dcmd_subcommands
+    _dcmd_current_dir_names
+    return
+  fi
+
+  case "${words[2]}" in
+    add)
+      if (( CURRENT == 3 )); then
+        # Suggest existing names in this directory to allow easy replacement.
+        _dcmd_current_dir_names
+        return
+      fi
+      return
+      ;;
+    remove|exec)
+      if (( CURRENT == 3 )); then
+        _dcmd_current_dir_names
+      fi
+      return
+      ;;
+    list|list-all|help)
+      return
+      ;;
+    *)
+      return
+      ;;
+  esac
+}
+
+_dcmd "$@"
