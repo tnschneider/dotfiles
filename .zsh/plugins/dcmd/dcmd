@@ -6,7 +6,7 @@ _dcmd_is_valid_name() {
 
 _dcmd_is_reserved_name() {
   case "$1" in
-    add|remove|exec|list|list-all|help)
+    add|remove|run|list|list-all|prune|help)
       return 0
       ;;
     *)
@@ -33,10 +33,11 @@ _dcmd_validate_command_name() {
 
 _dcmd_usage() {
   echo "Usage:"
-  echo "  dcmd exec <name>"
+  echo "  dcmd run <name>"
   echo "  dcmd <name>"
   echo "  dcmd list"
   echo "  dcmd list-all"
+  echo "  dcmd prune [--dry-run]"
   echo "  dcmd add <name> <command ...>"
   echo "  dcmd remove <name>"
   echo ""
@@ -50,6 +51,31 @@ _dcmd_expand_path() {
   echo "$expanded_path"
 }
 
+_dcmd_canonical_path() {
+  local raw_path="$1"
+  local expanded_path
+  expanded_path="$(_dcmd_expand_path "$raw_path")"
+
+  # Use an absolute path for consistent comparisons, resolving symlinks when possible.
+  local absolute_path="${expanded_path:a}"
+  if [[ -e "$absolute_path" ]]; then
+    echo "${absolute_path:A}"
+  else
+    echo "$absolute_path"
+  fi
+}
+
+_dcmd_normalize_file() {
+  local input_file="$1"
+  local output_file="$2"
+
+  # Keep comments first, then sort command entries by path and command name.
+  {
+    grep '^#' "$input_file" || true
+    grep -v '^#' "$input_file" | sort -t: -k1,1 -k2,2 || true
+  } > "$output_file"
+}
+
 _dcmd_ensure_file() {
   if [[ ! -f "$_dcmd_file" ]]; then
     echo "# Format: /path/to:command_name:command" > "$_dcmd_file"
@@ -58,7 +84,8 @@ _dcmd_ensure_file() {
 
 _dcmd_exec() {
   local target_name="$1"
-  local line raw_path rest name cmd expanded_path
+  local line raw_path rest name cmd expanded_path current_path
+  current_path="$(_dcmd_canonical_path "$PWD")"
 
   while IFS= read -r line; do
     [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
@@ -68,8 +95,8 @@ _dcmd_exec() {
     name="${rest%%:*}"
     cmd="${rest#*:}"
 
-    expanded_path="$(_dcmd_expand_path "$raw_path")"
-    if [[ "$expanded_path" == "$PWD" && "$name" == "$target_name" ]]; then
+    expanded_path="$(_dcmd_canonical_path "$raw_path")"
+    if [[ "$expanded_path" == "$current_path" && "$name" == "$target_name" ]]; then
       eval "$cmd"
       return $?
     fi
@@ -97,6 +124,13 @@ _dcmd_add() {
   local tmp_file
   tmp_file="$(mktemp)" || return 1
 
+  local sorted_file current_path
+  sorted_file="$(mktemp)" || {
+    rm -f "$tmp_file"
+    return 1
+  }
+  current_path="$(_dcmd_canonical_path "$PWD")"
+
   local line raw_path rest existing_name expanded_path
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
@@ -109,18 +143,22 @@ _dcmd_add() {
     raw_path="${line%%:*}"
     rest="${line#*:}"
     existing_name="${rest%%:*}"
-    expanded_path="$(_dcmd_expand_path "$raw_path")"
+    expanded_path="$(_dcmd_canonical_path "$raw_path")"
 
     # Replace any existing command with the same path+name.
-    if [[ "$expanded_path" == "$PWD" && "$existing_name" == "$name" ]]; then
+    if [[ "$expanded_path" == "$current_path" && "$existing_name" == "$name" ]]; then
       continue
     fi
 
     echo "$line" >> "$tmp_file"
   done < "$_dcmd_file"
 
-  echo "$PWD:$name:$cmd" >> "$tmp_file"
-  mv "$tmp_file" "$_dcmd_file"
+  echo "$current_path:$name:$cmd" >> "$tmp_file"
+
+  _dcmd_normalize_file "$tmp_file" "$sorted_file"
+
+  mv "$sorted_file" "$_dcmd_file"
+  rm -f "$tmp_file"
 
   echo "dcmd: added '$name' for $PWD"
 }
@@ -136,7 +174,8 @@ _dcmd_remove() {
   tmp_file="$(mktemp)" || return 1
 
   local removed=0
-  local line raw_path rest existing_name expanded_path
+  local line raw_path rest existing_name expanded_path current_path
+  current_path="$(_dcmd_canonical_path "$PWD")"
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
 
@@ -148,9 +187,9 @@ _dcmd_remove() {
     raw_path="${line%%:*}"
     rest="${line#*:}"
     existing_name="${rest%%:*}"
-    expanded_path="$(_dcmd_expand_path "$raw_path")"
+    expanded_path="$(_dcmd_canonical_path "$raw_path")"
 
-    if [[ "$expanded_path" == "$PWD" && "$existing_name" == "$name" ]]; then
+    if [[ "$expanded_path" == "$current_path" && "$existing_name" == "$name" ]]; then
       removed=1
       continue
     fi
@@ -170,8 +209,9 @@ _dcmd_remove() {
 }
 
 _dcmd_list() {
-  local line raw_path rest name cmd expanded_path
+  local line raw_path rest name cmd expanded_path current_path
   local found=0
+  current_path="$(_dcmd_canonical_path "$PWD")"
 
   while IFS= read -r line; do
     [[ -z "$line" || "${line#\#}" != "$line" ]] && continue
@@ -180,9 +220,9 @@ _dcmd_list() {
     rest="${line#*:}"
     name="${rest%%:*}"
     cmd="${rest#*:}"
-    expanded_path="$(_dcmd_expand_path "$raw_path")"
+    expanded_path="$(_dcmd_canonical_path "$raw_path")"
 
-    if [[ "$expanded_path" == "$PWD" ]]; then
+    if [[ "$expanded_path" == "$current_path" ]]; then
       echo "$name:$cmd"
       found=1
     fi
@@ -208,6 +248,60 @@ _dcmd_list_all() {
   fi
 }
 
+_dcmd_prune() {
+  local dry_run="$1"
+  local tmp_file
+  tmp_file="$(mktemp)" || return 1
+
+  local sorted_file
+  sorted_file="$(mktemp)" || {
+    rm -f "$tmp_file"
+    return 1
+  }
+
+  local line raw_path rest name expanded_path
+  local pruned=0
+  local kept=0
+
+  while IFS= read -r line; do
+    if [[ -z "$line" ]]; then
+      continue
+    fi
+
+    if [[ "${line#\#}" != "$line" ]]; then
+      echo "$line" >> "$tmp_file"
+      continue
+    fi
+
+    raw_path="${line%%:*}"
+    expanded_path="$(_dcmd_canonical_path "$raw_path")"
+
+    if [[ -d "$expanded_path" ]]; then
+      echo "$line" >> "$tmp_file"
+      ((kept++))
+    else
+      if [[ "$dry_run" == "1" ]]; then
+        rest="${line#*:}"
+        name="${rest%%:*}"
+        echo "dcmd: would prune '$name' for $expanded_path"
+      fi
+      ((pruned++))
+    fi
+  done < "$_dcmd_file"
+
+  _dcmd_normalize_file "$tmp_file" "$sorted_file"
+
+  if [[ "$dry_run" == "1" ]]; then
+    rm -f "$tmp_file" "$sorted_file"
+    echo "dcmd: dry-run complete; would prune $pruned entr$( [[ $pruned -eq 1 ]] && echo y || echo ies ); would keep $kept"
+    return 0
+  fi
+
+  mv "$sorted_file" "$_dcmd_file"
+  rm -f "$tmp_file"
+  echo "dcmd: pruned $pruned entr$( [[ $pruned -eq 1 ]] && echo y || echo ies ); kept $kept"
+}
+
 _dcmd_ensure_file
 
 case "$1" in
@@ -227,10 +321,10 @@ case "$1" in
     fi
     _dcmd_remove "$1"
     ;;
-  exec)
+  run)
     shift
     if [[ $# -ne 1 ]]; then
-      echo "dcmd: usage is dcmd exec <name>" >&2
+      echo "dcmd: usage is dcmd run <name>" >&2
       return 1
     fi
     if ! _dcmd_validate_command_name "$1"; then
@@ -253,6 +347,19 @@ case "$1" in
       return 1
     fi
     _dcmd_list_all
+    ;;
+  prune)
+    shift
+    if [[ $# -gt 1 ]]; then
+      echo "dcmd: usage is dcmd prune [--dry-run]" >&2
+      return 1
+    fi
+    if [[ $# -eq 1 && "$1" != "--dry-run" ]]; then
+      echo "dcmd: unknown option '$1'" >&2
+      echo "dcmd: usage is dcmd prune [--dry-run]" >&2
+      return 1
+    fi
+    _dcmd_prune "$( [[ "$1" == "--dry-run" ]] && echo 1 || echo 0 )"
     ;;
   help|-h|--help|"")
     _dcmd_usage

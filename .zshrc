@@ -28,25 +28,15 @@ alias portfind="sudo lsof -i -P | grep"
 alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias start="dcmd exec start"
-alias s="dcmd exec start"
-alias t="dcmd exec test"
+alias start="dcmd run start"
+alias s="dcmd run start"
+alias t="dcmd run test"
 alias home="cd ~"
 
 
 ### FUNCTIONS AND COMPLETIONS ###
 
-fpath=(~/.zsh $fpath)
-
-autoload -Uz funcinit compinit
-
-funcinit ~/.zsh
-
-# Firebend
-fpath=(~/.zsh.fb $fpath)
-
-funcinit ~/.zsh.fb
-
+autoload -Uz compinit
 compinit -C
 
 # Platform extensions
@@ -64,10 +54,27 @@ fi
 
 source ~/.antigen.zsh
 
+# public
 antigen bundle agkozak/zsh-z
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle extract
+# local
+PLUGINS="$HOME/.zsh/plugins"
+antigen bundle $PLUGINS/android
+antigen bundle $PLUGINS/anykey
+antigen bundle $PLUGINS/dcmd
+antigen bundle $PLUGINS/ef
+antigen bundle $PLUGINS/keepalive
+antigen bundle $PLUGINS/repo
+antigen bundle $PLUGINS/since
+# firebend
+PLUGINS_FB="$HOME/.zsh/firebend/plugins"
+antigen bundle $PLUGINS_FB/ct
+antigen bundle $PLUGINS_FB/dp
+antigen bundle $PLUGINS_FB/android-launch
+antigen bundle $PLUGINS_FB/ct-mobile-launch
+antigen bundle $PLUGINS_FB/ct-mobile-launch-two
 
 antigen apply
 

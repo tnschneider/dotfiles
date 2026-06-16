@@ -5,7 +5,6 @@ DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
-rm -rf ~/.zsh.fb && ln -s "$DOTFILES/.zsh.fb" ~/.zsh.fb
 
 mkdir -p "$HOME/Library/Application Support/tabby"
 rm -f "$HOME/Library/Application Support/tabby/config.yaml" \

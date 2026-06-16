@@ -1,0 +1,7 @@
+_ct_plugin_dir="${0:A:h}"
+fpath=("$_ct_plugin_dir" $fpath)
+autoload -Uz ct _ct
+
+if (( $+functions[compdef] )); then
+  compdef _ct ct
+fi

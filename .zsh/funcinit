@@ -1,3 +1,0 @@
-	zsh_autoload_functions=($1/*(N:t))
-	zsh_autoload_functions=(${zsh_autoload_functions:#_*})
-	(( ${#zsh_autoload_functions} )) && autoload -Uz -- $zsh_autoload_functions

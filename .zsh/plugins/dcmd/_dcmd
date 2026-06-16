@@ -1,7 +1,7 @@
 #compdef dcmd
 
 _dcmd_file="$HOME/.dcmd"
-_dcmd_reserved_names=(add remove exec list list-all help)
+_dcmd_reserved_names=(add remove run list list-all prune help)
 
 _dcmd_expand_path_for_completion() {
   local raw_path="$1"
@@ -10,10 +10,26 @@ _dcmd_expand_path_for_completion() {
   echo "$expanded_path"
 }
 
+_dcmd_canonical_path_for_completion() {
+  local raw_path="$1"
+  local expanded_path
+  expanded_path="$(_dcmd_expand_path_for_completion "$raw_path")"
+
+  local absolute_path="${expanded_path:a}"
+  if [[ -e "$absolute_path" ]]; then
+    echo "${absolute_path:A}"
+  else
+    echo "$absolute_path"
+  fi
+}
+
 _dcmd_current_dir_names() {
   local line raw_path rest name expanded_path
   local -a names
   local -A seen
+  local current_path
+
+  current_path="$(_dcmd_canonical_path_for_completion "$PWD")"
 
   [[ -f "$_dcmd_file" ]] || return 0
 
@@ -23,9 +39,9 @@ _dcmd_current_dir_names() {
     raw_path="${line%%:*}"
     rest="${line#*:}"
     name="${rest%%:*}"
-    expanded_path="$(_dcmd_expand_path_for_completion "$raw_path")"
+    expanded_path="$(_dcmd_canonical_path_for_completion "$raw_path")"
 
-    [[ "$expanded_path" == "$PWD" ]] || continue
+    [[ "$expanded_path" == "$current_path" ]] || continue
     [[ -n "$name" ]] || continue
 
     if [[ -z "${seen[$name]}" ]]; then
@@ -38,12 +54,12 @@ _dcmd_current_dir_names() {
 }
 
 _dcmd_subcommands() {
-  compadd -- add remove exec list list-all help
+  compadd -- add remove run list list-all prune help
 }
 
 _dcmd() {
   local -a subcommands
-  subcommands=(add remove exec list list-all help)
+  subcommands=(add remove run list list-all prune help)
 
   if (( CURRENT == 2 )); then
     _dcmd_subcommands
@@ -60,9 +76,15 @@ _dcmd() {
       fi
       return
       ;;
-    remove|exec)
+    remove|run)
       if (( CURRENT == 3 )); then
         _dcmd_current_dir_names
+      fi
+      return
+      ;;
+    prune)
+      if (( CURRENT == 3 )); then
+        compadd -- --dry-run
       fi
       return
       ;;
