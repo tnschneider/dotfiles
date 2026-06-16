@@ -15,18 +15,20 @@ rm -f "$HOME/Library/Application Support/tabby/workspace-config.yaml" \
 
 ### BOOTSTRAP ###
 
+# brew
 if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
-
 if [[ $(uname -m) == "arm64" ]] && [[ -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# git
 if ! command -v git &> /dev/null; then
     brew install git || echo "Warning: Failed to install git"
 fi
 
+# nvm/node
 if [[ ! -d "$HOME/.nvm" ]]; then
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
     \. "$HOME/.nvm/nvm.sh"
@@ -35,10 +37,32 @@ if [[ ! -d "$HOME/.nvm" ]]; then
     nvm alias default 20.19.6
 fi
 
+# dotnet
 if ! command -v dotnet &> /dev/null; then
     curl -fsSL https://dot.net/v1/dotnet-install.sh | bash || echo "Warning: Failed to install dotnet-sdk"
 fi
 
+# ef
+if ! command -v dotnet-ef &> /dev/null; then
+    dotnet tool install --global dotnet-ef || echo "Warning: Failed to install dotnet-ef"
+fi
+
+# dotnet-dump
+if ! command -v dotnet-dump &> /dev/null; then
+    dotnet tool install --global dotnet-dump || echo "Warning: Failed to install dotnet-dump"
+fi
+
+# sqlpackage
+if ! command -v sqlpackage &> /dev/null; then
+    dotnet tool install --global microsoft.sqlpackage || echo "Warning: Failed to install Microsoft.SqlPackage"
+fi
+
+# roslynator
+if ! command -v roslynator &> /dev/null; then
+    dotnet tool install --global roslynator.dotnet.cli || echo "Warning: Failed to install roslynator.dotnet.cli"
+fi
+
+# pyenv/python
 if ! command -v pyenv &> /dev/null; then
     brew install pyenv || echo "Warning: Failed to install pyenv"
     export PATH="$(brew --prefix pyenv)/shims:$(brew --prefix pyenv)/bin:$PATH"
@@ -46,22 +70,27 @@ if ! command -v pyenv &> /dev/null; then
     pyenv global 3.12
 fi
 
+# pnpm
 if ! command -v pnpm &> /dev/null; then
     brew install pnpm@10 || echo "Warning: Failed to install pnpm"
 fi
 
+# azure-cli
 if ! command -v az &> /dev/null; then
     brew install azure-cli || echo "Warning: Failed to install azure-cli"
 fi
 
+# kubectl
 if ! command -v kubectl &> /dev/null; then
     brew install kubectl || echo "Warning: Failed to install kubectl"
 fi
 
+# helm
 if ! command -v helm &> /dev/null; then
     brew install helm || echo "Warning: Failed to install helm"
 fi
 
+# yarn
 if command -v corepack &> /dev/null && ! command -v yarn &> /dev/null; then
     corepack enable yarn || echo "Warning: Failed to enable yarn via corepack"
 fi
