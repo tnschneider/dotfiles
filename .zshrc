@@ -38,7 +38,11 @@ alias home="cd ~"
 
 ### SHELL CUSTOMIZATION ###
 
-#antigen
+# antigen
+if [[ ! -f ~/.antigen.zsh ]]; then
+	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
+fi
+
 source ~/.antigen.zsh
 
 antigen bundle agkozak/zsh-z
@@ -59,7 +63,12 @@ antigen bundle $PLUGINS_FB/platform
 
 antigen apply
 
-#starship
+# starship
+if ! command -v starship &> /dev/null
+then
+    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+fi
+
 eval "$(starship init zsh)"
 
 
