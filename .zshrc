@@ -4,8 +4,7 @@ SAVEHIST=100000
 bindkey -e
 
 
-### ALIASES ###
-
+# aliases
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -31,9 +30,6 @@ alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
 alias reload="source ~/.zshrc && source ~/.zprofile"
 alias ztime="time zsh -i -c exit"
-
-
-### SHELL CUSTOMIZATION ###
 
 # antigen
 if [[ -f ~/.antigen.zsh ]]; then
@@ -62,9 +58,6 @@ fi
 if command -v starship &> /dev/null; then
     eval "$(starship init zsh)"
 fi
-
-
-### INITS ###
 
 # fnm
 if command -v fnm &> /dev/null; then

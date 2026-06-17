@@ -1,5 +1,4 @@
 # Homebrew Bundle
-# Install everything with: brew bundle
 
 # Taps
 tap "microsoft/mssql-release"

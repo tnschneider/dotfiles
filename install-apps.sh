@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Application Installation Script
 # This script installs all applications defined in the Brewfile.
-# Install everything with: brew bundle
-
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

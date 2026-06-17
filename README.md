@@ -8,6 +8,7 @@ cd dotfiles
 ./macos-defaults.sh
 ```
 
-- **`install.sh`** — symlinks dotfiles to home directory
-- **`install-apps.sh`** — installs Homebrew apps from `Brewfile`
-- **`macos-defaults.sh`** — applies macOS system preferences (run once on fresh machine)
+1. **`install.sh`** — symlinks dotfiles to home directory and bootstraps essential apps
+    - removes existing .gitconfig, .zprofile, .zshrc, .zsh/, and Tabby config if exists
+2. **`install-apps.sh`** — installs Homebrew apps from `Brewfile`
+3. **`macos-defaults.sh`** — applies macOS system preferences

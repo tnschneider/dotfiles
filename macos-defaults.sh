@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# macOS System Preferences
-# Run this script on a fresh Mac to apply preferred system defaults.
+# This script applies macOS system preferences.
 # Many settings require a logout/restart to take effect.
 
 set -e
 
-echo "Applying macOS defaults..."
+echo "Applying macOS preferences..."
 
 
 #####################

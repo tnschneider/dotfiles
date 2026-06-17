@@ -1,19 +1,21 @@
-#!/bin/zsh
+#!/bin/
+
+# This script sets up symlinks for configuration files and bootstraps essential tools and applications.
 set -e
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
+# configs and extensions
 rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
 rm -f ~/.zprofile && ln -s "$DOTFILES/.zprofile" ~/.zprofile
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
 
+# tabby
 mkdir -p "$HOME/Library/Application Support/tabby"
 rm -f "$HOME/Library/Application Support/tabby/config.yaml" \
     && ln -s "$DOTFILES/tabby/config.yaml" "$HOME/Library/Application Support/tabby/config.yaml"
 rm -f "$HOME/Library/Application Support/tabby/workspace-config.yaml" \
     && ln -s "$DOTFILES/tabby/workspace-config.yaml" "$HOME/Library/Application Support/tabby/workspace-config.yaml"
-
-### BOOTSTRAP ###
 
 # brew
 if ! command -v brew &> /dev/null; then
