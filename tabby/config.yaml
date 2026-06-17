@@ -901,27 +901,27 @@ hotkeys:
 terminal:
   searchOptions: {}
   colorScheme:
-    name: Chalk
-    foreground: '#d2d8d9'
-    background: '#2b2d2e'
-    cursor: '#708284'
+    name: Highway
+    foreground: '#ededed'
+    background: '#222225'
+    cursor: '#e0d9b9'
     colors:
-      - '#7d8b8f'
-      - '#b23a52'
-      - '#789b6a'
-      - '#b9ac4a'
-      - '#2a7fac'
-      - '#bd4f5a'
-      - '#44a799'
-      - '#d2d8d9'
-      - '#888888'
-      - '#f24840'
-      - '#80c470'
-      - '#ffeb62'
-      - '#4196ff'
-      - '#fc5275'
-      - '#53cdbd'
-      - '#d2d8d9'
+      - '#000000'
+      - '#d00e18'
+      - '#138034'
+      - '#ffcb3e'
+      - '#006bb3'
+      - '#6b2775'
+      - '#384564'
+      - '#ededed'
+      - '#5d504a'
+      - '#f07e18'
+      - '#b1d130'
+      - '#fff120'
+      - '#4fc2fd'
+      - '#de0071'
+      - '#5d504a'
+      - '#ffffff'
   font: Fira Code
   customColorSchemes: []
   showRecentProfiles: 0
@@ -929,11 +929,8 @@ terminal:
   profile: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
   showBuiltinProfiles: false
   fallbackFont: Courier New
-  scrollbackLines: 50000
+  scrollbackLines: 100000
   bell: visual
-  autoOpen: false
-  showTabProfileIcon: true
-  cursor: beam
   lightColorScheme:
     name: Tabby Default Light
     foreground: '#4d4d4c'
@@ -956,6 +953,8 @@ terminal:
       - '#8959a8'
       - '#3e999f'
       - '#ffffff'
+  cursor: beam
+  showTabProfileIcon: true
 ssh: {}
 clickableLinks: {}
 accessibility: {}
@@ -971,7 +970,20 @@ pluginBlacklist: []
 profileDefaults:
   ssh:
     disableDynamicTitle: true
-profileBlacklist: []
+profileBlacklist:
+  - local:binbash
+  - local:bincsh
+  - local:binksh
+  - serial:port-devtty-debug-console
+  - serial:port-devtty-Bluetooth-Incoming-Port
+  - serial:port-devtty-soundcoreA20i
+  - serial:template
+  - local:bintcsh
+  - local:binsh
+  - local:bindash
+  - socket:template
+  - telnet:template
+  - ssh:template
 groups: []
 recoverTabs: false
 workspaceManager: {}
