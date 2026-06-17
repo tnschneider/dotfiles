@@ -35,6 +35,7 @@
 [fetch]
 	prune = true
 [http]
+	version = HTTP/1.1
 	postBuffer = 104857600
 [merge]
 	conflictstyle = zdiff3
