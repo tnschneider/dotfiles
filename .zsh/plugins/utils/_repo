@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 #compdef repo
 
 compadd -- "$REPO_HOME"/*(/:t)

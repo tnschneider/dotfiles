@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 AVD=$1
 EMULATOR=$2
 APK_PATH=$3

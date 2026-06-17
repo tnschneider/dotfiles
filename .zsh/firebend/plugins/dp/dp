@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 local -A dirs=(
     walmart  "$REPO_HOME/data-pipelines/ct-walmart-data-pipeline"
     platform "$REPO_HOME/data-pipelines/platform-data-pipeline"

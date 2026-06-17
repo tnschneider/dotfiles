@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 _dcmd_file="$HOME/.dcmd"
 
 _dcmd_is_valid_name() {

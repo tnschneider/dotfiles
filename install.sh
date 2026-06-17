@@ -1,4 +1,4 @@
-#!/bin/
+#!/usr/bin/env zsh
 
 # This script sets up symlinks for configuration files and bootstraps essential tools and applications.
 set -e

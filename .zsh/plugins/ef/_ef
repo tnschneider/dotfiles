@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 #compdef ef
 
 compadd mg migrations mga db database dbu

@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 if ! command -v android-launch &> /dev/null
 then
     echo "android-launch could not be found, please install it to use this script"

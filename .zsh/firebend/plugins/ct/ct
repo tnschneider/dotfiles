@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 local -A dirs=(
     devs       "$REPO_HOME/walmart-control-tower/ct-developers"
     developers "$REPO_HOME/walmart-control-tower/ct-developers"

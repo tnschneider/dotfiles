@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 #compdef dcmd
 
 _dcmd_file="$HOME/.dcmd"

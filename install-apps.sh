@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # This script installs all applications defined in the Brewfile.
 set -e

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # This script applies macOS system preferences.
 # Many settings require a logout/restart to take effect.

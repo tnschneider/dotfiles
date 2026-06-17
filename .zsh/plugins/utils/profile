@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 if (( $# == 0 )); then
 	print -u2 "usage: profile <command> [args...]"
 	return 2

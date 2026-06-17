@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 if [ -z "$REPO_HOME" ]; then
   echo "Warning: REPO_HOME is not set, using current directory"
   REPO_HOME=$(pwd)
