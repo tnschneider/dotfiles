@@ -1,1 +1,5 @@
+if [ -z "$REPO_HOME" ]; then
+  echo "REPO_HOME is not set, using current directory"
+  REPO_HOME=$(pwd)
+fi
 cd "$REPO_HOME/$1"
