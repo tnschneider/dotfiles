@@ -8,7 +8,7 @@ _dcmd_is_valid_name() {
 
 _dcmd_is_reserved_name() {
   case "$1" in
-    set|unset|run|list|list-all|prune|help)
+    set|unset|run|show|rename|edit|list|list-all|prune|help)
       return 0
       ;;
     *)
@@ -36,7 +36,12 @@ _dcmd_validate_command_name() {
 _dcmd_usage() {
   echo "Usage:"
   echo "  dcmd run <name>"
+  echo "  dcmd run <name> [args ...]"
   echo "  dcmd <name>"
+  echo "  dcmd <name> [args ...]"
+  echo "  dcmd show <name>"
+  echo "  dcmd rename <old-name> <new-name>"
+  echo "  dcmd edit <name>"
   echo "  dcmd list"
   echo "  dcmd list-all"
   echo "  dcmd prune [--dry-run]"
@@ -84,9 +89,20 @@ _dcmd_ensure_file() {
   fi
 }
 
-_dcmd_exec() {
+typeset -g _dcmd_resolved_raw_path=""
+typeset -g _dcmd_resolved_path=""
+typeset -g _dcmd_resolved_name=""
+typeset -g _dcmd_resolved_cmd=""
+
+_dcmd_resolve() {
   local target_name="$1"
   local line raw_path rest name cmd expanded_path current_path
+
+  _dcmd_resolved_raw_path=""
+  _dcmd_resolved_path=""
+  _dcmd_resolved_name=""
+  _dcmd_resolved_cmd=""
+
   current_path="$(_dcmd_canonical_path "$PWD")"
 
   while IFS= read -r line; do
@@ -99,13 +115,130 @@ _dcmd_exec() {
 
     expanded_path="$(_dcmd_canonical_path "$raw_path")"
     if [[ "$expanded_path" == "$current_path" && "$name" == "$target_name" ]]; then
-      eval "$cmd"
-      return $?
+      _dcmd_resolved_raw_path="$raw_path"
+      _dcmd_resolved_path="$expanded_path"
+      _dcmd_resolved_name="$name"
+      _dcmd_resolved_cmd="$cmd"
+      return 0
     fi
   done < "$_dcmd_file"
 
   echo "dcmd: no command named '$target_name' for $PWD" >&2
   return 1
+}
+
+_dcmd_exec() {
+  local target_name="$1"
+  shift
+
+  if ! _dcmd_resolve "$target_name"; then
+    return 1
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    eval "$_dcmd_resolved_cmd"
+    return $?
+  fi
+
+  local -a quoted_args
+  quoted_args=("${(@q)@}")
+  eval "$_dcmd_resolved_cmd ${(j: :)quoted_args}"
+}
+
+_dcmd_show() {
+  local target_name="$1"
+
+  if ! _dcmd_resolve "$target_name"; then
+    return 1
+  fi
+
+  echo "path:$_dcmd_resolved_path"
+  echo "name:$_dcmd_resolved_name"
+  echo "command:$_dcmd_resolved_cmd"
+}
+
+_dcmd_rename() {
+  local old_name="$1"
+  local new_name="$2"
+
+  if ! _dcmd_validate_command_name "$old_name"; then
+    return 1
+  fi
+
+  if ! _dcmd_validate_command_name "$new_name"; then
+    return 1
+  fi
+
+  if ! _dcmd_resolve "$old_name"; then
+    return 1
+  fi
+
+  local original_cmd="$_dcmd_resolved_cmd"
+
+  if _dcmd_resolve "$new_name" >/dev/null 2>&1; then
+    echo "dcmd: command named '$new_name' already exists for $PWD" >&2
+    return 1
+  fi
+
+  _dcmd_set "$new_name" "$original_cmd" >/dev/null || return 1
+  _dcmd_unset "$old_name" >/dev/null || return 1
+
+  echo "dcmd: renamed '$old_name' to '$new_name' for $PWD"
+}
+
+_dcmd_edit() {
+  local target_name="$1"
+
+  if ! _dcmd_validate_command_name "$target_name"; then
+    return 1
+  fi
+
+  if ! _dcmd_resolve "$target_name"; then
+    return 1
+  fi
+
+  local editor_cmd="${VISUAL:-$EDITOR}"
+  if [[ -z "$editor_cmd" ]]; then
+    if command -v nano >/dev/null 2>&1; then
+      editor_cmd="nano"
+    else
+      echo "dcmd: set VISUAL or EDITOR to use edit (or install nano)" >&2
+      return 1
+    fi
+  fi
+
+  local tmp_file
+  tmp_file="$(mktemp)" || return 1
+  print -r -- "$_dcmd_resolved_cmd" > "$tmp_file"
+
+  local -a editor_parts
+  editor_parts=(${(z)editor_cmd})
+
+  "${editor_parts[@]}" "$tmp_file"
+  local exit_code=$?
+  if [[ $exit_code -ne 0 ]]; then
+    rm -f "$tmp_file"
+    return $exit_code
+  fi
+
+  local updated_cmd
+  updated_cmd="$(<"$tmp_file")"
+  rm -f "$tmp_file"
+
+  updated_cmd="${updated_cmd//$'\n'/ }"
+
+  if [[ -z "$updated_cmd" ]]; then
+    echo "dcmd: edited command cannot be empty" >&2
+    return 1
+  fi
+
+  if [[ "$updated_cmd" == "$_dcmd_resolved_cmd" ]]; then
+    echo "dcmd: no changes made to '$target_name' for $PWD"
+    return 0
+  fi
+
+  _dcmd_set "$target_name" "$updated_cmd" >/dev/null || return 1
+  echo "dcmd: edited '$target_name' for $PWD"
 }
 
 _dcmd_set() {
@@ -325,14 +458,43 @@ case "$1" in
     ;;
   run)
     shift
-    if [[ $# -ne 1 ]]; then
-      echo "dcmd: usage is dcmd run <name>" >&2
+    if [[ $# -lt 1 ]]; then
+      echo "dcmd: usage is dcmd run <name> [args ...]" >&2
       return 1
     fi
     if ! _dcmd_validate_command_name "$1"; then
       return 1
     fi
-    _dcmd_exec "$1"
+    local name="$1"
+    shift
+    _dcmd_exec "$name" "$@"
+    ;;
+  show)
+    shift
+    if [[ $# -ne 1 ]]; then
+      echo "dcmd: usage is dcmd show <name>" >&2
+      return 1
+    fi
+    if ! _dcmd_validate_command_name "$1"; then
+      return 1
+    fi
+    _dcmd_show "$1"
+    ;;
+  rename)
+    shift
+    if [[ $# -ne 2 ]]; then
+      echo "dcmd: usage is dcmd rename <old-name> <new-name>" >&2
+      return 1
+    fi
+    _dcmd_rename "$1" "$2"
+    ;;
+  edit)
+    shift
+    if [[ $# -ne 1 ]]; then
+      echo "dcmd: usage is dcmd edit <name>" >&2
+      return 1
+    fi
+    _dcmd_edit "$1"
     ;;
   list)
     shift
@@ -375,6 +537,8 @@ case "$1" in
     if ! _dcmd_validate_command_name "$1"; then
       return 1
     fi
-    _dcmd_exec "$1"
+    local name="$1"
+    shift
+    _dcmd_exec "$name" "$@"
     ;;
 esac

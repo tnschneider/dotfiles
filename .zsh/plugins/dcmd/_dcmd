@@ -2,7 +2,7 @@
 #compdef dcmd
 
 _dcmd_file="$HOME/.dcmd"
-_dcmd_reserved_names=(set unset run list list-all prune help)
+_dcmd_reserved_names=(set unset run show rename edit list list-all prune help)
 
 _dcmd_expand_path_for_completion() {
   local raw_path="$1"
@@ -55,12 +55,12 @@ _dcmd_current_dir_names() {
 }
 
 _dcmd_subcommands() {
-  compadd -- set unset run list list-all prune help
+  compadd -- set unset run show rename edit list list-all prune help
 }
 
 _dcmd() {
   local -a subcommands
-  subcommands=(set unset run list list-all prune help)
+  subcommands=(set unset run show rename edit list list-all prune help)
 
   if (( CURRENT == 2 )); then
     _dcmd_subcommands
@@ -69,9 +69,17 @@ _dcmd() {
   fi
 
   case "${words[2]}" in
-    set|unset|run)
+    set|unset|run|show|edit)
       if (( CURRENT == 3 )); then
         _dcmd_current_dir_names
+      fi
+      return
+      ;;
+    rename)
+      if (( CURRENT == 3 )); then
+        _dcmd_current_dir_names
+      elif (( CURRENT == 4 )); then
+        return
       fi
       return
       ;;

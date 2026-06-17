@@ -1,5 +1,14 @@
 # env vars
 export MACHINE_NAME=$(hostname -s)
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export EDITOR="nano"
+export VISUAL="$EDITOR"
+export GIT_EDITOR="$EDITOR"
+export PAGER="less"
+export LESS="-FRX"
+export MANPAGER="less -R"
+export HOMEBREW_NO_ANALYTICS=1
 export ASPNETCORE_ENVIRONMENT="Development"
 export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
