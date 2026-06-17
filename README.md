@@ -3,12 +3,14 @@
 ```bash
 git clone <repository-url>
 cd dotfiles
+
+# symlinks dotfiles to home directory and bootstraps essential apps
+# removes existing .gitconfig, .zprofile, .zshrc, .zsh/, and Tabby config if exists
 ./install.sh
+
+# installs Homebrew apps from `Brewfile`
 ./install-apps.sh
+
+# applies macOS system preferences
 ./macos-defaults.sh
 ```
-
-1. **`install.sh`** — symlinks dotfiles to home directory and bootstraps essential apps
-    - removes existing .gitconfig, .zprofile, .zshrc, .zsh/, and Tabby config if exists
-2. **`install-apps.sh`** — installs Homebrew apps from `Brewfile`
-3. **`macos-defaults.sh`** — applies macOS system preferences
