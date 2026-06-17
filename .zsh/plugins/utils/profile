@@ -1,0 +1,20 @@
+if (( $# == 0 )); then
+	print -u2 "usage: profile <command> [args...]"
+	return 2
+fi
+
+if ! zmodload zsh/zprof; then
+	print -u2 "profile: failed to load zsh/zprof"
+	return 1
+fi
+
+# Avoid stale profile output from earlier runs in this shell.
+zprof -c 2>/dev/null
+
+"$@"
+exit_code=$?
+
+zprof
+print -u2 "profile: zprof reports zsh function call costs; for external commands use time"
+
+return $exit_code

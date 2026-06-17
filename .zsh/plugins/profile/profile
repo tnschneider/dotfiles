@@ -1,3 +1,0 @@
-zmodload zsh/zprof;
-eval "$@";
-zprof;

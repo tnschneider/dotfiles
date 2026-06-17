@@ -901,27 +901,27 @@ hotkeys:
 terminal:
   searchOptions: {}
   colorScheme:
-    name: Highway
-    foreground: '#ededed'
-    background: '#222225'
-    cursor: '#e0d9b9'
+    name: Smyck
+    foreground: '#f7f7f7'
+    background: '#1b1b1b'
+    cursor: '#bbbbbb'
     colors:
       - '#000000'
-      - '#d00e18'
-      - '#138034'
-      - '#ffcb3e'
-      - '#006bb3'
-      - '#6b2775'
-      - '#384564'
-      - '#ededed'
-      - '#5d504a'
-      - '#f07e18'
-      - '#b1d130'
-      - '#fff120'
-      - '#4fc2fd'
-      - '#de0071'
-      - '#5d504a'
-      - '#ffffff'
+      - '#b84131'
+      - '#7da900'
+      - '#c4a500'
+      - '#62a3c4'
+      - '#ba8acc'
+      - '#207383'
+      - '#a1a1a1'
+      - '#7a7a7a'
+      - '#d6837c'
+      - '#c4f137'
+      - '#fee14d'
+      - '#8dcff0'
+      - '#f79aff'
+      - '#6ad9cf'
+      - '#f7f7f7'
   font: Fira Code
   customColorSchemes: []
   showRecentProfiles: 0

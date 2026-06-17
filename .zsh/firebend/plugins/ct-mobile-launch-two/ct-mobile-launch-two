@@ -1,9 +1,0 @@
-android-launch "TC-72" \
-    "emulator-5554" \
-    ~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk \
-    "com.firebend.controltower" &
-
-android-launch "TC-72_2" \
-    "emulator-5556" \
-    ~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk \
-    "com.firebend.controltower" &

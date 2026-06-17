@@ -35,11 +35,6 @@ alias home="cd ~"
 
 
 ### SHELL CUSTOMIZATION ###
-# platform extensions
-PLATFORM_HOME="$REPO_HOME"
-PF_SH_EXT="$PLATFORM_HOME/ct-platform/platform-developers/platform-sh-extensions.sh"
-test -f $PF_SH_EXT && source $PF_SH_EXT
-
 # antigen
 if [[ ! -f ~/.antigen.zsh ]]; then
 	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
@@ -54,19 +49,14 @@ antigen bundle extract
 
 PLUGINS="$HOME/.zsh/plugins"
 antigen bundle $PLUGINS/android
-antigen bundle $PLUGINS/anykey
 antigen bundle $PLUGINS/dcmd
 antigen bundle $PLUGINS/ef
-antigen bundle $PLUGINS/keepalive
-antigen bundle $PLUGINS/profile
-antigen bundle $PLUGINS/repo
+antigen bundle $PLUGINS/utils
 
 PLUGINS_FB="$HOME/.zsh/firebend/plugins"
 antigen bundle $PLUGINS_FB/ct
 antigen bundle $PLUGINS_FB/dp
-antigen bundle $PLUGINS_FB/android-launch
-antigen bundle $PLUGINS_FB/ct-mobile-launch
-antigen bundle $PLUGINS_FB/ct-mobile-launch-two
+antigen bundle $PLUGINS_FB/platform
 
 antigen apply
 

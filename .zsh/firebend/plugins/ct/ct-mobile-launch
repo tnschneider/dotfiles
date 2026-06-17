@@ -1,0 +1,18 @@
+if ! command -v android-launch &> /dev/null
+then
+    echo "android-launch could not be found, please install it to use this script"
+    return
+fi
+
+android-launch "TC-72" \
+    "emulator-5554" \
+    ~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk \
+    "com.firebend.controltower" &
+
+# if $1 is 2 or two, then launch another one
+if [ "$1" = "2" ] || [ "$1" = "two" ]; then
+    android-launch "TC-72_2" \
+        "emulator-5556" \
+        ~/Repos/walmart-control-tower/dist/mobile-app/src/ControlTowerMobile.Droid/net8.0-android/com.firebend.controltower-Signed.apk \
+        "com.firebend.controltower" &
+fi
