@@ -14,6 +14,17 @@ rm -f "$HOME/Library/Application Support/tabby/workspace-config.yaml" \
 
 ### BOOTSTRAP ###
 
+# antigen
+if [[ ! -f ~/.antigen.zsh ]]; then
+	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
+fi
+
+# starship
+if ! command -v starship &> /dev/null
+then
+    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+fi
+
 # brew
 if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

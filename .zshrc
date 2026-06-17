@@ -1,10 +1,11 @@
 HISTFILE=~/.histfile
-HISTSIZE=50000
-SAVEHIST=50000
+HISTSIZE=100000
+SAVEHIST=100000
 bindkey -e
 
 
 ### ENV VARS ###
+
 export ASPNETCORE_ENVIRONMENT="Development"
 export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
@@ -12,6 +13,7 @@ export REPO_HOME="$HOME/Repos"
 
 
 ### ALIASES ###
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -35,11 +37,8 @@ alias home="cd ~"
 
 
 ### SHELL CUSTOMIZATION ###
-# antigen
-if [[ ! -f ~/.antigen.zsh ]]; then
-	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
-fi
 
+#antigen
 source ~/.antigen.zsh
 
 antigen bundle agkozak/zsh-z
@@ -60,12 +59,7 @@ antigen bundle $PLUGINS_FB/platform
 
 antigen apply
 
-# starship
-if ! command -v starship &> /dev/null
-then
-    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
-fi
-
+#starship
 eval "$(starship init zsh)"
 
 
