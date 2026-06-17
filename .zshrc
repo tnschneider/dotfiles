@@ -6,26 +6,31 @@ bindkey -e
 
 ### ALIASES ###
 
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias c="clear"
+alias start="dcmd run start"
+alias s="dcmd run start"
+alias t="dcmd run test"
+alias home="cd ~"
 alias dcu="docker compose up"
 alias dcb="docker compose build"
 alias dcub="docker compose up --build"
 alias pf="platform"
 alias dr="dotnet run"
-alias pnpx="pnpm dlx"
-alias python=python3
-alias pip=pip3
+alias dwr="dotnet watch run"
+alias dwt="dotnet watch test"
+alias dt="dotnet test"
+alias dtf="dotnet test --filter"
 alias portfind="sudo lsof -i -P | grep"
-alias zshrc="source ~/.zshrc"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias start="dcmd run start"
-alias s="dcmd run start"
-alias t="dcmd run test"
-alias home="cd ~"
+alias reload="source ~/.zshrc && source ~/.zprofile"
+alias ztime="time zsh -i -c exit"
 
 
 ### SHELL CUSTOMIZATION ###
@@ -66,18 +71,13 @@ eval "$(starship init zsh)"
 
 ### INITS ###
 
-# pyenv
-if command -v pyenv &> /dev/null; then
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-fi
-
 # fnm
 if command -v fnm &> /dev/null; then
     eval "$(fnm env --use-on-cd)"
 fi
 
-# pnpm completion
-if command -v pnpm >/dev/null 2>&1; then
-	eval "$(pnpm completion zsh)"
+# pyenv
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
 fi

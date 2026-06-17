@@ -3,6 +3,7 @@
 
 # Taps
 tap "microsoft/mssql-release"
+tap "mongodb/brew"
 
 # Formulae
 brew "flyway"

@@ -14,6 +14,7 @@ if ! command -v brew &>/dev/null; then
 fi
 
 brew trust microsoft/mssql-release
+brew trust mongodb/brew
 
 echo "[INFO] Installing applications from Brewfile..."
 HOMEBREW_ACCEPT_EULA=Y brew bundle --file="$SCRIPT_DIR/Brewfile"
