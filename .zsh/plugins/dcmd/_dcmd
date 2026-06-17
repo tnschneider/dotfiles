@@ -1,7 +1,7 @@
 #compdef dcmd
 
 _dcmd_file="$HOME/.dcmd"
-_dcmd_reserved_names=(add remove run list list-all prune help)
+_dcmd_reserved_names=(set unset run list list-all prune help)
 
 _dcmd_expand_path_for_completion() {
   local raw_path="$1"
@@ -54,12 +54,12 @@ _dcmd_current_dir_names() {
 }
 
 _dcmd_subcommands() {
-  compadd -- add remove run list list-all prune help
+  compadd -- set unset run list list-all prune help
 }
 
 _dcmd() {
   local -a subcommands
-  subcommands=(add remove run list list-all prune help)
+  subcommands=(set unset run list list-all prune help)
 
   if (( CURRENT == 2 )); then
     _dcmd_subcommands
@@ -68,15 +68,7 @@ _dcmd() {
   fi
 
   case "${words[2]}" in
-    add)
-      if (( CURRENT == 3 )); then
-        # Suggest existing names in this directory to allow easy replacement.
-        _dcmd_current_dir_names
-        return
-      fi
-      return
-      ;;
-    remove|run)
+    set|unset|run)
       if (( CURRENT == 3 )); then
         _dcmd_current_dir_names
       fi

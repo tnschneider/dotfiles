@@ -6,7 +6,7 @@ _dcmd_is_valid_name() {
 
 _dcmd_is_reserved_name() {
   case "$1" in
-    add|remove|run|list|list-all|prune|help)
+    set|unset|run|list|list-all|prune|help)
       return 0
       ;;
     *)
@@ -38,8 +38,8 @@ _dcmd_usage() {
   echo "  dcmd list"
   echo "  dcmd list-all"
   echo "  dcmd prune [--dry-run]"
-  echo "  dcmd add <name> <command ...>"
-  echo "  dcmd remove <name>"
+  echo "  dcmd set <name> <command ...>"
+  echo "  dcmd unset <name>"
   echo ""
   echo "File format: /path/to:command_name:echo 'hello'"
 }
@@ -106,12 +106,12 @@ _dcmd_exec() {
   return 1
 }
 
-_dcmd_add() {
+_dcmd_set() {
   local name="$1"
   shift
 
   if [[ $# -eq 0 ]]; then
-    echo "dcmd: missing command to add" >&2
+    echo "dcmd: missing command to set" >&2
     _dcmd_usage
     return 1
   fi
@@ -160,10 +160,10 @@ _dcmd_add() {
   mv "$sorted_file" "$_dcmd_file"
   rm -f "$tmp_file"
 
-  echo "dcmd: added '$name' for $PWD"
+  echo "dcmd: set '$name' for $PWD"
 }
 
-_dcmd_remove() {
+_dcmd_unset() {
   local name="$1"
 
   if ! _dcmd_validate_command_name "$name"; then
@@ -173,7 +173,7 @@ _dcmd_remove() {
   local tmp_file
   tmp_file="$(mktemp)" || return 1
 
-  local removed=0
+  local unset_count=0
   local line raw_path rest existing_name expanded_path current_path
   current_path="$(_dcmd_canonical_path "$PWD")"
   while IFS= read -r line; do
@@ -190,7 +190,7 @@ _dcmd_remove() {
     expanded_path="$(_dcmd_canonical_path "$raw_path")"
 
     if [[ "$expanded_path" == "$current_path" && "$existing_name" == "$name" ]]; then
-      removed=1
+      unset_count=1
       continue
     fi
 
@@ -199,8 +199,8 @@ _dcmd_remove() {
 
   mv "$tmp_file" "$_dcmd_file"
 
-  if [[ $removed -eq 1 ]]; then
-    echo "dcmd: removed '$name' for $PWD"
+  if [[ $unset_count -eq 1 ]]; then
+    echo "dcmd: unset '$name' for $PWD"
     return 0
   fi
 
@@ -305,21 +305,21 @@ _dcmd_prune() {
 _dcmd_ensure_file
 
 case "$1" in
-  add)
+  set)
     shift
     if [[ $# -lt 2 ]]; then
-      echo "dcmd: usage is dcmd add <name> <command ...>" >&2
+      echo "dcmd: usage is dcmd set <name> <command ...>" >&2
       return 1
     fi
-    _dcmd_add "$1" "${@:2}"
+    _dcmd_set "$1" "${@:2}"
     ;;
-  remove)
+  unset)
     shift
     if [[ $# -ne 1 ]]; then
-      echo "dcmd: usage is dcmd remove <name>" >&2
+      echo "dcmd: usage is dcmd unset <name>" >&2
       return 1
     fi
-    _dcmd_remove "$1"
+    _dcmd_unset "$1"
     ;;
   run)
     shift
