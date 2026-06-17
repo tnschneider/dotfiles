@@ -27,11 +27,14 @@
 	ui = auto
 [core]
 	autocrlf = input
-	editor = nano
+	editor = micro
+	pager = delta
 [credential]
 	helper = osxkeychain
 [diff]
 	algorithm = histogram
+[interactive]
+	diffFilter = delta --color-only
 [fetch]
 	prune = true
 [http]
@@ -47,3 +50,6 @@
 	autoSetupRemote = true
 [rerere]
 	enabled = true
+[delta]
+	navigate = true
+	side-by-side = false

@@ -2,7 +2,7 @@
 export MACHINE_NAME=$(hostname -s)
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
-export EDITOR="nano"
+export EDITOR="micro"
 export VISUAL="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 export PAGER="less"
@@ -27,9 +27,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # snowflake cli
 export PATH=/Applications/SnowflakeCLI.app/Contents/MacOS/:$PATH
-
-# snowsql
-export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
 
 # yarn
 export PATH=$PATH:~/.yarn/bin

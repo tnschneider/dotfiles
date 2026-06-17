@@ -8,9 +8,6 @@ bindkey -e
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 alias c="clear"
 alias start="dcmd run start"
 alias s="dcmd run start"
@@ -30,6 +27,19 @@ alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
 alias reload="source ~/.zshrc && source ~/.zprofile"
 alias ztime="time zsh -i -c exit"
+if [[ -o interactive ]] && command -v eza >/dev/null 2>&1; then
+  alias ls='eza'
+  alias l='eza -1'
+  alias la='eza -a'
+  alias ll='eza -la --git --icons=auto'
+  alias lt='eza --tree --level=2 --icons=auto'
+else
+  alias ls='ls -G'
+  alias l='ls -1'
+  alias la='ls -a'
+  alias ll='ls -laG'
+fi
+
 
 # antigen
 if [[ -f ~/.antigen.zsh ]]; then
