@@ -4,14 +4,6 @@ SAVEHIST=100000
 bindkey -e
 
 
-### ENV VARS ###
-
-export ASPNETCORE_ENVIRONMENT="Development"
-export AZURE_FUNCTIONS_ENVIRONMENT="Development"
-export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
-export REPO_HOME="$HOME/Repos"
-
-
 ### ALIASES ###
 
 alias ll='ls -alF'
@@ -72,13 +64,7 @@ fi
 eval "$(starship init zsh)"
 
 
-### APPLICATIONS ###
-
-# yarn
-export PATH=$PATH:~/.yarn/bin
-
-# local bin
-export PATH="$HOME/.local/bin:$PATH"
+### INITS ###
 
 # pyenv
 if command -v pyenv &> /dev/null; then
@@ -86,20 +72,10 @@ if command -v pyenv &> /dev/null; then
     eval "$(pyenv init -)"
 fi
 
-# dotnet tools
-export PATH="$PATH:$HOME/.dotnet/tools"
-
 # fnm
 if command -v fnm &> /dev/null; then
     eval "$(fnm env --use-on-cd)"
 fi
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
 
 # pnpm completion
 if command -v pnpm >/dev/null 2>&1; then

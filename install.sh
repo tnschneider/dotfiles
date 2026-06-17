@@ -3,6 +3,7 @@ set -e
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
 rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
+rm -f ~/.zprofile && ln -s "$DOTFILES/.zprofile" ~/.zprofile
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
 
