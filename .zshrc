@@ -36,37 +36,32 @@ alias ztime="time zsh -i -c exit"
 ### SHELL CUSTOMIZATION ###
 
 # antigen
-if [[ ! -f ~/.antigen.zsh ]]; then
-	curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/.antigen.zsh
+if [[ -f ~/.antigen.zsh ]]; then
+    source ~/.antigen.zsh
+
+    antigen bundle agkozak/zsh-z
+    antigen bundle zsh-users/zsh-syntax-highlighting
+    antigen bundle MichaelAquilina/zsh-you-should-use
+    antigen bundle extract
+
+    PLUGINS="$HOME/.zsh/plugins"
+    antigen bundle $PLUGINS/android
+    antigen bundle $PLUGINS/dcmd
+    antigen bundle $PLUGINS/ef
+    antigen bundle $PLUGINS/utils
+
+    PLUGINS_FB="$HOME/.zsh/firebend/plugins"
+    antigen bundle $PLUGINS_FB/ct
+    antigen bundle $PLUGINS_FB/dp
+    antigen bundle $PLUGINS_FB/platform
+
+    antigen apply
 fi
-
-source ~/.antigen.zsh
-
-antigen bundle agkozak/zsh-z
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle MichaelAquilina/zsh-you-should-use
-antigen bundle extract
-
-PLUGINS="$HOME/.zsh/plugins"
-antigen bundle $PLUGINS/android
-antigen bundle $PLUGINS/dcmd
-antigen bundle $PLUGINS/ef
-antigen bundle $PLUGINS/utils
-
-PLUGINS_FB="$HOME/.zsh/firebend/plugins"
-antigen bundle $PLUGINS_FB/ct
-antigen bundle $PLUGINS_FB/dp
-antigen bundle $PLUGINS_FB/platform
-
-antigen apply
 
 # starship
-if ! command -v starship &> /dev/null
-then
-    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
 fi
-
-eval "$(starship init zsh)"
 
 
 ### INITS ###

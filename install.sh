@@ -28,6 +28,17 @@ if ! command -v git &> /dev/null; then
     brew install git || echo "Warning: Failed to install git"
 fi
 
+# antigen
+if [[ ! -f ~/.antigen.zsh ]]; then
+    curl -fsSL https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh -o ~/.antigen.zsh \
+        || echo "Warning: Failed to install antigen"
+fi
+
+# starship
+if ! command -v starship &> /dev/null; then
+    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes || echo "Warning: Failed to install starship"
+fi
+
 # fnm/node
 if ! command -v fnm &> /dev/null; then
     brew install fnm || echo "Warning: Failed to install fnm"
@@ -67,6 +78,8 @@ fi
 # pyenv/python
 if ! command -v pyenv &> /dev/null; then
     brew install pyenv || echo "Warning: Failed to install pyenv"
+fi
+if command -v pyenv &> /dev/null; then
     export PATH="$(brew --prefix pyenv)/shims:$(brew --prefix pyenv)/bin:$PATH"
     pyenv install -s 3.12
     pyenv global 3.12
