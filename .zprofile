@@ -31,3 +31,6 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+
+# orbstack
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
