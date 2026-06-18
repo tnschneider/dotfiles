@@ -18,7 +18,6 @@ if [[ -f ~/.antigen.zsh ]]; then
     antigen bundle zsh-users/zsh-syntax-highlighting
     antigen bundle MichaelAquilina/zsh-you-should-use
     antigen bundle extract
-    antigen bundle direnv
 
     PLUGINS="$HOME/.zsh/plugins"
     antigen bundle $PLUGINS/android
