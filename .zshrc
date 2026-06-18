@@ -1,44 +1,13 @@
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+setopt AUTO_CD
 bindkey -e
-
-
-# aliases
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias c="clear"
-alias start="dcmd run start"
-alias s="dcmd run start"
-alias t="dcmd run test"
-alias home="cd ~"
-alias dcu="docker compose up"
-alias dcb="docker compose build"
-alias dcub="docker compose up --build"
-alias pf="platform"
-alias dr="dotnet run"
-alias dwr="dotnet watch run"
-alias dwt="dotnet watch test"
-alias dt="dotnet test"
-alias dtf="dotnet test --filter"
-alias portfind="sudo lsof -i -P | grep"
-alias pidpath="ps xuwww -p"
-alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias reload="source ~/.zshrc && source ~/.zprofile"
-alias ztime="time zsh -i -c exit"
-if [[ -o interactive ]] && command -v eza >/dev/null 2>&1; then
-  alias ls='eza'
-  alias l='eza -1'
-  alias la='eza -a'
-  alias ll='eza -la --git --icons=auto'
-  alias lt='eza --tree --level=2 --icons=auto'
-else
-  alias ls='ls -G'
-  alias l='ls -1'
-  alias la='ls -a'
-  alias ll='ls -laG'
-fi
 
 
 # antigen
@@ -62,6 +31,45 @@ if [[ -f ~/.antigen.zsh ]]; then
     antigen bundle $PLUGINS_FB/platform
 
     antigen apply
+fi
+
+# aliases
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias c="clear"
+alias g="git"
+alias start="dcmd run start"
+alias s="dcmd run start"
+alias t="dcmd run test"
+alias dcu="docker compose up"
+alias dcb="docker compose build"
+alias dcub="docker compose up --build"
+alias pf="platform"
+alias dr="dotnet run"
+alias dwr="dotnet watch run"
+alias dwt="dotnet watch test"
+alias db="dotnet build"
+alias dc="dotnet clean"
+alias dt="dotnet test"
+alias dtf="dotnet test --filter"
+alias portfind="sudo lsof -i -P | grep"
+alias pidpath="ps xuwww -p"
+alias portpid="sudo lsof -i -P | grep LISTEN | grep"
+alias reload="source ~/.zshrc && source ~/.zprofile"
+alias ztime="time zsh -i -c exit"
+alias path='echo $PATH | tr ":" "\n"'
+alias which="which -a"
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza'
+  alias l='eza -1'
+  alias la='eza -a'
+  alias ll='eza -la --git --icons=auto'
+  alias lt='eza --tree --level=2 --icons=auto'
+else
+  alias ls='ls -G'
+  alias l='ls -1'
+  alias la='ls -a'
+  alias ll='ls -laG'
 fi
 
 # starship
