@@ -60,6 +60,11 @@ alias reload="source ~/.zshrc && source ~/.zprofile"
 alias ztime="time zsh -i -c exit"
 alias path='echo $PATH | tr ":" "\n"'
 alias which="which -a"
+alias back="cd -"
+alias up="cd .."
+alias home="cd ~"
+alias desktop="cd ~/Desktop"
+alias downloads="cd ~/Downloads"
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='eza -1'
