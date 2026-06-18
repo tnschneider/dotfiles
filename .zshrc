@@ -18,11 +18,13 @@ if [[ -f ~/.antigen.zsh ]]; then
     antigen bundle zsh-users/zsh-syntax-highlighting
     antigen bundle MichaelAquilina/zsh-you-should-use
     antigen bundle extract
+    antigen bundle encode64
 
     PLUGINS="$HOME/.zsh/plugins"
     antigen bundle $PLUGINS/android
     antigen bundle $PLUGINS/dcmd
     antigen bundle $PLUGINS/ef
+    antigen bundle $PLUGINS/todos
     antigen bundle $PLUGINS/utils
 
     PLUGINS_FB="$HOME/.zsh/firebend/plugins"
@@ -64,6 +66,9 @@ alias up="cd .."
 alias home="cd ~"
 alias desktop="cd ~/Desktop"
 alias downloads="cd ~/Downloads"
+# alias todo="todo add"
+# alias todos="todo list"
+# alias todone="todo complete"
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='eza -1'
