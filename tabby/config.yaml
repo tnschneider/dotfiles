@@ -1,15 +1,76 @@
 version: 8
 profiles:
-  - type: local
+  - id: split-layout:custom:OS-default:af70cd75-9f0c-42a7-be9c-2092c5b0e11b
+    type: split-layout
     name: Repos
-    options:
-      command: /bin/zsh
-      args:
-        - '--login'
-      cwd: /Users/terryschneider/Repos
-      env: {}
-    id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
     icon: fas fa-code-branch
+    options:
+      recoveryToken:
+        type: app:split-tab
+        ratios:
+          - 0.5
+          - 0.5
+        orientation: h
+        children:
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: Repos
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos
+                env: {}
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-code-branch
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: Repos
+            tabIcon: fas fa-code-branch
+            disableDynamicTitle: false
+          - type: app:local-tab
+            profile:
+              id: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+              type: local
+              name: Repos
+              group: ''
+              options:
+                restoreFromPTYID: false
+                command: /bin/zsh
+                args:
+                  - '--login'
+                cwd: /Users/terryschneider/Repos
+                env: {}
+                width: null
+                height: null
+                pauseAfterExit: false
+                runAsAdministrator: false
+              icon: fas fa-code-branch
+              color: ''
+              disableDynamicTitle: false
+              weight: 0
+              isBuiltin: false
+              isTemplate: false
+              terminalColorScheme: null
+              behaviorOnSessionEnd: auto
+            savedState: false
+            tabTitle: Repos
+            tabCustomTitle: ''
+            tabIcon: fas fa-network-wired
+            disableDynamicTitle: false
   - id: split-layout:custom:WMT-CT-Backend:18d5afad-7e5a-4e83-ae6e-73248c7e6973
     type: split-layout
     name: WMT CT
@@ -922,11 +983,11 @@ terminal:
       - '#f79aff'
       - '#6ad9cf'
       - '#f7f7f7'
-  font: Fira Code
+  font: FiraCode Nerd Font Propo
   customColorSchemes: []
   showRecentProfiles: 0
   fontSize: 12
-  profile: local:custom:OS-default:fa7c1f7c-6c73-4fdf-bb7d-eda6cff279a0
+  profile: split-layout:custom:OS-default:af70cd75-9f0c-42a7-be9c-2092c5b0e11b
   showBuiltinProfiles: false
   fallbackFont: Courier New
   scrollbackLines: 100000
