@@ -1,0 +1,341 @@
+#!/usr/bin/env zsh
+
+local output_mode="default"
+local from_tz=""
+local show_all=0
+local show_help=0
+local -a positional
+
+while (( $# > 0 )); do
+    case "$1" in
+        --from)
+            if (( $# < 2 )); then
+                print -u2 "tzconv: --from requires a time zone"
+                return 2
+            fi
+            from_tz="$2"
+            shift 2
+            ;;
+        --iso)
+            output_mode="iso"
+            shift
+            ;;
+        --human)
+            output_mode="human"
+            shift
+            ;;
+        --epoch)
+            output_mode="epoch"
+            shift
+            ;;
+        --json)
+            output_mode="json"
+            shift
+            ;;
+        --all)
+            show_all=1
+            shift
+            ;;
+        -h|--help)
+            show_help=1
+            shift
+            ;;
+        --)
+            shift
+            while (( $# > 0 )); do
+                positional+=("$1")
+                shift
+            done
+            ;;
+        -*)
+            print -u2 "tzconv: unknown option '$1'"
+            return 2
+            ;;
+        *)
+            positional+=("$1")
+            shift
+            ;;
+    esac
+done
+
+if (( show_help )); then
+    print -u2 "usage: tzconv [--from <timezone>] [--iso|--human|--epoch|--json] [--all] <timezone> <timestamp>"
+    print -u2 "usage: tzconv [--from <timezone>] [--iso|--human|--epoch|--json] [--all] <timezone> now"
+    print -u2 "usage: <timestamp> | tzconv [--from <timezone>] [--iso|--human|--epoch|--json] [--all] <timezone>"
+    print -u2 "example: tzconv est 2026-06-17T21:56:22.0625324Z"
+    print -u2 "example: tzconv pacific 1718661382.5"
+    print -u2 "example: tzconv --from utc pacific \"2026-06-17 21:56:22\""
+    print -u2 "example: tzconv --all now"
+    print -u2 "note: est/cst/mst/pst map to regional U.S. time zones with DST rules"
+    return 0
+fi
+
+local target_tz=""
+local timestamp=""
+
+if (( show_all )); then
+    if (( ${#positional[@]} == 0 )); then
+        target_tz="all"
+        timestamp="now"
+    elif (( ${#positional[@]} == 1 )); then
+        target_tz="all"
+        timestamp="${positional[1]}"
+    else
+        target_tz="all"
+        timestamp="${(j: :)positional}"
+    fi
+else
+    if (( ${#positional[@]} < 2 )); then
+        if [[ ! -t 0 ]] && (( ${#positional[@]} == 1 )); then
+            target_tz="${positional[1]}"
+            IFS= read -r timestamp
+        else
+            print -u2 "usage: tzconv [--from <timezone>] [--iso|--human|--epoch|--json] [--all] <timezone> <timestamp>"
+            print -u2 "try: tzconv --help"
+            return 2
+        fi
+    else
+        target_tz="${positional[1]}"
+        positional=("${(@)positional[2,-1]}")
+        timestamp="${(j: :)positional}"
+    fi
+fi
+
+python3 - "$output_mode" "$target_tz" "$timestamp" "$from_tz" <<'PY'
+import json
+import re
+import sys
+from datetime import datetime
+from email.utils import parsedate_to_datetime
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    print("tzconv: python3 zoneinfo support is required", file=sys.stderr)
+    raise SystemExit(1)
+
+ALIASES = {
+    "cst": "America/Chicago",
+    "est": "America/New_York",
+    "mst": "America/Denver",
+    "pst": "America/Los_Angeles",
+    "central": "America/Chicago",
+    "eastern": "America/New_York",
+    "mountain": "America/Denver",
+    "pacific": "America/Los_Angeles",
+    "ct": "America/Chicago",
+    "et": "America/New_York",
+    "mt": "America/Denver",
+    "pt": "America/Los_Angeles",
+    "arizona": "America/Phoenix",
+    "az": "America/Phoenix",
+    "chicago": "America/Chicago",
+    "denver": "America/Denver",
+    "la": "America/Los_Angeles",
+    "newyork": "America/New_York",
+    "ny": "America/New_York",
+    "local": "LOCAL",
+    "utc": "UTC",
+    "gmt": "UTC",
+}
+
+ALL_ZONES = [
+    ("pacific", "America/Los_Angeles"),
+    ("mountain", "America/Denver"),
+    ("central", "America/Chicago"),
+    ("eastern", "America/New_York"),
+]
+
+
+def trim_fraction(value: str) -> str:
+    match = re.match(r"^(.*?\.)(\d+)(Z|[+-]\d{2}:?\d{2})$", value)
+    if not match:
+        match = re.match(r"^(.*?\.)(\d+)$", value)
+    if not match:
+        return value
+
+    prefix, fraction, suffix = match.groups(default="")
+    return f"{prefix}{fraction[:6]}{suffix}"
+
+
+def parse_timestamp(raw: str) -> datetime:
+    stripped = raw.strip()
+    if not stripped:
+        raise ValueError("timestamp is empty")
+
+    if stripped.lower() == "now":
+        return datetime.now().astimezone()
+
+    if re.fullmatch(r"\d+(?:\.\d+)?", stripped):
+        return datetime.fromtimestamp(float(stripped), tz=ZoneInfo("UTC"))
+
+    normalized = stripped
+    if normalized.endswith(("Z", "z")):
+        normalized = normalized[:-1] + "+00:00"
+    normalized = trim_fraction(normalized)
+
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        parsed = None
+    if parsed is not None:
+        return parsed
+
+    try:
+        parsed = parsedate_to_datetime(stripped)
+    except (TypeError, ValueError, IndexError, OverflowError):
+        parsed = None
+    if parsed is not None:
+        return parsed
+
+    formats = [
+        "%Y-%m-%d %H:%M:%S.%f%z",
+        "%Y-%m-%d %H:%M:%S%z",
+        "%Y-%m-%d %H:%M:%S.%f",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d",
+        "%m/%d/%Y %H:%M:%S.%f%z",
+        "%m/%d/%Y %H:%M:%S%z",
+        "%m/%d/%Y %H:%M:%S.%f",
+        "%m/%d/%Y %H:%M:%S",
+    ]
+    for fmt in formats:
+        try:
+            return datetime.strptime(normalized, fmt)
+        except ValueError:
+            continue
+
+    try:
+        from dateutil import parser as dateutil_parser
+    except ImportError as exc:
+        raise ValueError(
+            "unsupported timestamp format; install python-dateutil for broader parsing"
+        ) from exc
+
+    return dateutil_parser.parse(stripped)
+
+
+def format_offset(value: str) -> str:
+    if len(value) == 5:
+        return value[:3] + ":" + value[3:]
+    return value
+
+
+def resolve_zone(name: str):
+    resolved = ALIASES.get(name.lower(), name)
+    if resolved == "LOCAL":
+        return datetime.now().astimezone().tzinfo
+    return ZoneInfo(resolved)
+
+
+def format_iso(value: datetime) -> str:
+    timespec = "microseconds" if value.microsecond else "seconds"
+    stamp = value.isoformat(timespec=timespec)
+    if value.microsecond:
+        stamp = re.sub(r"(\.\d{1,6}?)0+([+-])", r"\1\2", stamp)
+        stamp = re.sub(r"\.([+-])", r"\1", stamp)
+    return stamp
+
+
+def format_human(value: datetime, label: str) -> str:
+    offset = format_offset(value.strftime("%z"))
+    human = value.strftime("%Y-%m-%d %I:%M:%S %p")
+    return f"{human} {label} ({offset})"
+
+
+def format_epoch(value: datetime) -> str:
+    epoch = value.timestamp()
+    if value.microsecond:
+        return f"{epoch:.6f}".rstrip("0").rstrip(".")
+    return str(int(epoch))
+
+
+def build_payload(value: datetime, label: str, zone_name: str, alias: str):
+    return {
+        "alias": alias,
+        "zone": zone_name,
+        "abbreviation": label,
+        "offset": format_offset(value.strftime("%z")),
+        "iso": format_iso(value),
+        "human": format_human(value, label),
+        "epoch": format_epoch(value),
+    }
+
+
+def emit(value: datetime, output_mode: str, label: str, zone_name: str, alias: str):
+    payload = build_payload(value, label, zone_name, alias)
+    if output_mode == "iso":
+        print(payload["iso"])
+    elif output_mode == "human":
+        print(payload["human"])
+    elif output_mode == "epoch":
+        print(payload["epoch"])
+    elif output_mode == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(payload["iso"])
+        print(payload["human"])
+        print(payload["epoch"])
+
+
+def attach_source_zone(value: datetime, source_zone):
+    if value.tzinfo is not None:
+        return value
+    if source_zone is not None:
+        return value.replace(tzinfo=source_zone)
+    return value.astimezone()
+
+
+output_mode = sys.argv[1]
+target_arg = sys.argv[2]
+timestamp_arg = sys.argv[3]
+source_arg = sys.argv[4]
+
+source_zone = None
+if source_arg:
+    try:
+        source_zone = resolve_zone(source_arg)
+    except Exception:
+        print(f"tzconv: unknown source time zone '{source_arg}'", file=sys.stderr)
+        raise SystemExit(2)
+
+if target_arg != "all":
+    try:
+        target_zone = resolve_zone(target_arg)
+    except Exception:
+        print(f"tzconv: unknown time zone '{target_arg}'", file=sys.stderr)
+        raise SystemExit(2)
+
+try:
+    parsed = parse_timestamp(timestamp_arg)
+except ValueError as exc:
+    print(f"tzconv: {exc}", file=sys.stderr)
+    raise SystemExit(2)
+
+parsed = attach_source_zone(parsed, source_zone)
+
+if target_arg == "all":
+    payloads = []
+    for index, (label, zone_name) in enumerate(ALL_ZONES):
+        converted = parsed.astimezone(ZoneInfo(zone_name))
+        zone_label = converted.tzname() or zone_name
+        if output_mode == "json":
+            payloads.append(build_payload(converted, zone_label, zone_name, label))
+        else:
+            print(f"{label}:")
+            emit(converted, output_mode, zone_label, zone_name, label)
+            if index != len(ALL_ZONES) - 1:
+                print()
+    if output_mode == "json":
+        print(json.dumps(payloads, indent=2, sort_keys=True))
+else:
+    converted = parsed.astimezone(target_zone)
+    name = converted.tzname() or target_arg
+    resolved_target = ALIASES.get(target_arg.lower(), target_arg)
+    if resolved_target == "LOCAL":
+        resolved_target = str(target_zone)
+    emit(converted, output_mode, name, resolved_target, target_arg)
+PY
+exit_code=$?
+
+return $exit_code

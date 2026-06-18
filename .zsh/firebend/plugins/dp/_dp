@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 #compdef dp
 
 compadd walmart platform infra

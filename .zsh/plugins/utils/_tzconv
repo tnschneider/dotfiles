@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+#compdef tzconv
+
+local -a zones
+zones=(
+	'pacific:America/Los_Angeles'
+	'mountain:America/Denver'
+	'central:America/Chicago'
+	'eastern:America/New_York'
+	'pst:America/Los_Angeles'
+	'arizona:America/Phoenix'
+	'az:America/Phoenix'
+	'mst:America/Denver'
+	'cst:America/Chicago'
+	'est:America/New_York'
+	'pt:America/Los_Angeles'
+	'mt:America/Denver'
+	'ct:America/Chicago'
+	'et:America/New_York'
+	'la:America/Los_Angeles'
+	'denver:America/Denver'
+	'chicago:America/Chicago'
+	'ny:America/New_York'
+	'newyork:America/New_York'
+	'local:local system time zone'
+	'utc:UTC'
+	'gmt:UTC'
+)
+
+_arguments -s \
+	'--from[interpret naive timestamps in this source zone]:source zone:->zones' \
+	'--iso[print only ISO timestamp with offset]' \
+	'--human[print only human-readable timestamp]' \
+	'--epoch[print only Unix epoch]' \
+	'--json[print structured JSON output]' \
+	'--all[print all U.S. time zones]' \
+	'(-h --help)'{-h,--help}'[show usage]' \
+	'1:target zone:->zones' \
+	'*:timestamp:->timestamp'
+
+case $state in
+	zones)
+		describe -t zones 'time zone' zones
+		;;
+	timestamp)
+		_values 'timestamp' now
+		;;
+esac

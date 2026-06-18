@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 #compdef ct
 
 compadd devs developers mobile modules test tests web worker api-tests
