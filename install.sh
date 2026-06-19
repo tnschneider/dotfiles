@@ -9,6 +9,7 @@ rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
 rm -f ~/.zprofile && ln -s "$DOTFILES/.zprofile" ~/.zprofile
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
+rm -r ~/.config/starship.toml && ln -s "$DOTFILES/starship.toml" ~/.config/starship.toml
 
 # tabby
 mkdir -p "$HOME/Library/Application Support/tabby"
