@@ -69,7 +69,7 @@ profiles:
             savedState: false
             tabTitle: Repos
             tabCustomTitle: ''
-            tabIcon: fas fa-network-wired
+            tabIcon: fas fa-code-branch
             disableDynamicTitle: false
   - id: split-layout:custom:WMT-CT-Backend:18d5afad-7e5a-4e83-ae6e-73248c7e6973
     type: split-layout
@@ -849,7 +849,7 @@ hotkeys:
   toggle-fullscreen:
     - Ctrl+⌘+F
   close-tab:
-    - ⌘-W
+    - ⌥-E
   reopen-tab:
     - ⌘-Shift-T
   toggle-last-tab: []
