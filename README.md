@@ -1,7 +1,7 @@
 # dotfiles
 
 ```bash
-git clone [<repository-url>](https://github.com/tnschneider/dotfiles)
+git clone https://github.com/tnschneider/dotfiles
 cd dotfiles
 
 # symlinks dotfiles to home directory and bootstraps essential apps
