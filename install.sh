@@ -9,6 +9,8 @@ rm -f ~/.gitconfig && ln -s "$DOTFILES/.gitconfig" ~/.gitconfig
 rm -f ~/.zprofile && ln -s "$DOTFILES/.zprofile" ~/.zprofile
 rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
+
+# starship
 rm -r ~/.config/starship.toml && ln -s "$DOTFILES/starship.toml" ~/.config/starship.toml
 
 # tabby
@@ -17,6 +19,10 @@ rm -f "$HOME/Library/Application Support/tabby/config.yaml" \
     && ln -s "$DOTFILES/tabby/config.yaml" "$HOME/Library/Application Support/tabby/config.yaml"
 rm -f "$HOME/Library/Application Support/tabby/workspace-config.yaml" \
     && ln -s "$DOTFILES/tabby/workspace-config.yaml" "$HOME/Library/Application Support/tabby/workspace-config.yaml"
+
+# zed
+mkdir -p "$HOME/.config/zed"
+rm -f "$HOME/.config/zed/settings.json" && ln -s "$DOTFILES/zed/settings.json" "$HOME/.config/zed/settings.json"
 
 # brew
 if ! command -v brew &> /dev/null; then
