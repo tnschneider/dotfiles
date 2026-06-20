@@ -13,6 +13,7 @@ export ASPNETCORE_ENVIRONMENT="Development"
 export AZURE_FUNCTIONS_ENVIRONMENT="Development"
 export DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
 export REPO_HOME="$HOME/Repos"
+export DEFAULT_TODOIST_PROJECT="work-6XFRxGj875m3gvxq"
 
 # brew
 if [[ -x /opt/homebrew/bin/brew ]]; then

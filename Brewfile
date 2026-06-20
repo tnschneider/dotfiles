@@ -26,7 +26,6 @@ brew "shellcheck"
 brew "shfmt"
 brew "snowflake-cli"
 brew "sqlcmd"
-brew "todoist-cli"
 brew "yq"
 
 # Casks
@@ -66,4 +65,3 @@ cask "the-unarchiver"
 cask "utm"
 cask "visual-studio-code"
 cask "zed"
-cask "zoom"

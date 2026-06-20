@@ -171,7 +171,8 @@ symbol = " "
 symbol = "󰍛 "
 threshold = 80
 disabled = false
-format = '$symbol$ram_pct '
+format = '[$symbol$ram_pct]($style) '
+style = "bold red"
 
 [meson]
 symbol = "󰔷 "
