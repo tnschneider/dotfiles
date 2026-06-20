@@ -24,7 +24,6 @@ if [[ -f ~/.antigen.zsh ]]; then
     antigen bundle $PLUGINS/android
     antigen bundle $PLUGINS/dcmd
     antigen bundle $PLUGINS/ef
-    antigen bundle $PLUGINS/todos
     antigen bundle $PLUGINS/utils
 
     PLUGINS_FB="$HOME/.zsh/firebend/plugins"
