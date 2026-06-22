@@ -22,6 +22,8 @@
 	current = rev-parse --abbrev-ref HEAD
 	wip = !git add -A && git commit -m "WIP"
 	main = !git checkout main
+	all-branches = "!f(){ rg -uuu --hidden --files -g \"**/.git/HEAD\" . | while IFS= read -r head; do repo=${head%/.git/HEAD}; printf \"\\n%s\\n\" \"$repo\"; git -C \"$repo\" branch; done; }; f"
+
 
 [color]
 	ui = auto
