@@ -70,6 +70,7 @@ alias todo="open https://app.todoist.com/app/project/$DEFAULT_TODOIST_PROJECT"
 alias fzr="rg --files | fzf --preview 'bat --style=numbers --color=always {}' | xargs bat"
 alias fzo="rg --files | fzf --preview 'bat --style=numbers --color=always {}' | xargs open"
 alias fze="rg --files | fzf --preview 'bat --style=numbers --color=always {}' | xargs $EDITOR"
+alias cloc="cloc --vcs=git ."
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='eza -1'
