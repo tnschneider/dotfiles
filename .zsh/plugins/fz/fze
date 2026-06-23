@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+rg --files --hidden | fzf --preview 'bat --style=numbers --color=always {}' | xargs $EDITOR

@@ -14,7 +14,7 @@
 	back = "!z() { git reset --mixed HEAD~${1:-1}; }; z"
 	cleanup = !git remote prune origin && git gc
 	bomb = "!z() { dry_run=false; if [ \"$1\" = '--dry-run' ] || [ \"$1\" = '-n' ]; then dry_run=true; shift; fi; branches=$(git branch | grep -v -E '^\\*|main$|master$|develop$'); if [ -z \"$branches\" ]; then echo 'No branches to delete'; return 0; fi; if $dry_run; then echo 'Would delete:'; echo \"$branches\"; else echo \"$branches\" | xargs -n 1 git branch -D 2>/dev/null; git cleanup; fi; }; z"
-	delete-branch = branch -D
+	delete = branch -D
 	stash-all = !git add -A && git stash
 	uncommit = reset --soft HEAD^
 	dm = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs git branch -d && git cleanup"
@@ -23,6 +23,8 @@
 	wip = !git add -A && git commit -m "WIP"
 	main = !git checkout main
 	all-branches = "!f(){ rg -uuu --hidden --files -g \"**/.git/HEAD\" . | while IFS= read -r head; do repo=${head%/.git/HEAD}; printf \"\\n%s\\n\" \"$repo\"; git -C \"$repo\" branch; done; }; f"
+	cof = !git branch --format='%(refname:short)' | fzf --preview='git log --oneline --graph --date=short --pretty=format:\"%C(auto)%d %h %ad %s\" {} | head -20' | xargs -r git checkout
+	delete-fuzzy = !git branch --format='%(refname:short)' | fzf --prompt='DELETE> ' --preview='git log --oneline --graph --date=short --pretty=format:\"%C(auto)%d %h %ad %s\" {} | head -20' | xargs -r git branch -D
 
 
 [color]

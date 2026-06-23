@@ -24,6 +24,7 @@ if [[ -f ~/.antigen.zsh ]]; then
     antigen bundle $PLUGINS/android
     antigen bundle $PLUGINS/dcmd
     antigen bundle $PLUGINS/ef
+    antigen bundle $PLUGINS/fz
     antigen bundle $PLUGINS/utils
 
     PLUGINS_FB="$HOME/.zsh/firebend/plugins"
@@ -56,7 +57,7 @@ alias dtf="dotnet test --filter"
 alias portfind="sudo lsof -i -P | grep"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias reload="source ~/.zprofile && source ~/.zshrc"
+alias reload="zsh -i"
 alias ztime="time zsh -i -c exit"
 alias path='echo $PATH | tr ":" "\n"'
 alias which="which -a"
@@ -67,9 +68,6 @@ alias desktop="cd ~/Desktop"
 alias downloads="cd ~/Downloads"
 alias repos="cd ~/Repos"
 alias todo="open https://app.todoist.com/app/project/$DEFAULT_TODOIST_PROJECT"
-alias fzr="rg --files --hidden | fzf --preview 'bat --style=numbers --color=always {}' | xargs bat"
-alias fzo="rg --files --hidden | fzf --preview 'bat --style=numbers --color=always {}' | xargs open"
-alias fze="rg --files --hidden | fzf --preview 'bat --style=numbers --color=always {}' | xargs $EDITOR"
 alias cloc="cloc --vcs=git ."
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
