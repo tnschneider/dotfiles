@@ -11,8 +11,8 @@ bindkey -e
 
 
 # antigen
-if [[ -f ~/.antigen.zsh ]]; then
-    source ~/.antigen.zsh
+if [[ -f ~/antigen.zsh ]]; then
+    source ~/antigen.zsh
 
     antigen bundle agkozak/zsh-z
     antigen bundle Aloxaf/fzf-tab

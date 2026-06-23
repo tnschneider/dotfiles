@@ -38,8 +38,8 @@ if ! command -v git &> /dev/null; then
 fi
 
 # antigen
-if [[ ! -f ~/.antigen.zsh ]]; then
-    curl -fsSL https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh -o ~/.antigen.zsh \
+if [[ ! -f ~/antigen.zsh ]]; then
+    curl -fsSL https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh -o ~/antigen.zsh \
         || echo "Warning: Failed to install antigen"
 fi
 
