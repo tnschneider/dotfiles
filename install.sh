@@ -11,7 +11,7 @@ rm -f ~/.zshrc && ln -s "$DOTFILES/.zshrc" ~/.zshrc
 rm -rf ~/.zsh && ln -s "$DOTFILES/.zsh" ~/.zsh
 
 # starship
-rm -r ~/.config/starship.toml && ln -s "$DOTFILES/starship.toml" ~/.config/starship.toml
+rm -rf ~/.config/starship.toml && ln -s "$DOTFILES/starship.toml" ~/.config/starship.toml
 
 # tabby
 mkdir -p "$HOME/Library/Application Support/tabby"
