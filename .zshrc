@@ -104,3 +104,9 @@ if command -v pyenv &> /dev/null; then
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
 fi
+
+#devin
+if [ -x "/opt/homebrew/bin/devin" ]; then
+  eval "$("/opt/homebrew/bin/devin" shell init zsh --stage pre)"
+  eval "$("/opt/homebrew/bin/devin" shell init zsh --stage post)"
+fi
