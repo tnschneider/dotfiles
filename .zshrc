@@ -88,6 +88,12 @@ if command -v starship &> /dev/null; then
     eval "$(starship init zsh)"
 fi
 
+# fzf
+if command -v fzf &> /dev/null; then
+    source <(fzf --zsh)
+    bindkey '^G' fzf-cd-widget
+fi
+
 # fnm
 if command -v fnm &> /dev/null; then
     eval "$(fnm env --use-on-cd)"
@@ -97,10 +103,4 @@ fi
 if command -v pyenv &> /dev/null; then
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
-fi
-
-# fzf
-if command -v fzf &> /dev/null; then
-    source <(fzf --zsh)
-    bindkey '^G' fzf-cd-widget
 fi

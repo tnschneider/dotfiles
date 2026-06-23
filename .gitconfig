@@ -25,6 +25,7 @@
 	all-branches = "!f(){ rg -uuu --hidden --files -g \"**/.git/HEAD\" . | while IFS= read -r head; do repo=${head%/.git/HEAD}; printf \"\\n%s\\n\" \"$repo\"; git -C \"$repo\" branch; done; }; f"
 	cof = !git branch --format='%(refname:short)' | fzf --preview='git log --oneline --graph --date=short --pretty=format:\"%C(auto)%d %h %ad %s\" {} | head -20' | xargs -r git checkout
 	delete-fuzzy = !git branch --format='%(refname:short)' | fzf --prompt='DELETE> ' --preview='git log --oneline --graph --date=short --pretty=format:\"%C(auto)%d %h %ad %s\" {} | head -20' | xargs -r git branch -D
+	fork = "!z() { git checkout -b \"forks/tschneider/$*\"; }; z"
 
 
 [color]

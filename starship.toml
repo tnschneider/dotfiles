@@ -52,8 +52,8 @@ symbol = " "
 symbol = " "
 
 [cmd_duration]
-min_time = 0
-show_milliseconds = true
+min_time = 2000
+show_milliseconds = false
 
 [cpp]
 symbol = " "
