@@ -15,6 +15,7 @@ if [[ -f ~/.antigen.zsh ]]; then
     source ~/.antigen.zsh
 
     antigen bundle agkozak/zsh-z
+    antigen bundle Aloxaf/fzf-tab
     antigen bundle zsh-users/zsh-syntax-highlighting
     antigen bundle MichaelAquilina/zsh-you-should-use
     antigen bundle extract
@@ -96,4 +97,10 @@ fi
 if command -v pyenv &> /dev/null; then
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
+fi
+
+# fzf
+if command -v fzf &> /dev/null; then
+    source <(fzf --zsh)
+    bindkey '^G' fzf-cd-widget
 fi
