@@ -91,7 +91,7 @@ fi
 # fzf
 if command -v fzf &> /dev/null; then
     source <(fzf --zsh)
-    bindkey '^G' fzf-cd-widget
+    bindkey '^V' fzf-cd-widget
 fi
 
 # fnm
@@ -106,7 +106,7 @@ if command -v pyenv &> /dev/null; then
 fi
 
 #devin
-if [ -x "/opt/homebrew/bin/devin" ]; then
+if [ "$TERM_PROGRAM" != "vscode" ] && [ -x "/opt/homebrew/bin/devin" ]; then
   eval "$("/opt/homebrew/bin/devin" shell init zsh --stage pre)"
   eval "$("/opt/homebrew/bin/devin" shell init zsh --stage post)"
 fi
