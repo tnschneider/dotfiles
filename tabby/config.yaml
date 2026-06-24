@@ -1031,6 +1031,11 @@ pluginBlacklist: []
 profileDefaults:
   ssh:
     disableDynamicTitle: true
+  local:
+    type: local
+    options:
+      env: {}
+    disableDynamicTitle: true
 profileBlacklist:
   - local:binbash
   - local:bincsh
