@@ -96,7 +96,8 @@ fi
 
 # pnpm
 if ! command -v pnpm &> /dev/null; then
-    brew install pnpm@10 || echo "Warning: Failed to install pnpm"
+    corepack enable
+    corepack prepare pnpm@10.10.0 --activate || echo "Warning: Failed to enable pnpm via corepack"
 fi
 
 # azure-cli
