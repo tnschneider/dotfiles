@@ -58,7 +58,7 @@ alias dtf="dotnet test --filter"
 alias portfind="sudo lsof -i -P | grep"
 alias pidpath="ps xuwww -p"
 alias portpid="sudo lsof -i -P | grep LISTEN | grep"
-alias reload="zsh -i"
+alias reload="exec zsh -l"
 alias ztime="time zsh -i -c exit"
 alias path='echo $PATH | tr ":" "\n"'
 alias which="which -a"
@@ -70,6 +70,7 @@ alias downloads="cd ~/Downloads"
 alias repos="cd ~/Repos"
 alias todo="open https://app.todoist.com/app/project/$DEFAULT_TODOIST_PROJECT"
 alias cloc="cloc --vcs=git ."
+alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; echo macOS DNS Cache Reset"
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='eza -1'
