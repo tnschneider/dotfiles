@@ -1,31 +1,61 @@
 #!/usr/bin/env zsh
 
 local sort_by="name"
-local signal="15"
-zparseopts -D -- n=arg_n m=arg_m c=arg_c
-if (( $#arg_n )); then sort_by="name"; fi
-if (( $#arg_m )); then sort_by="mem"; fi
-if (( $#arg_c )); then sort_by="cpu"; fi
-if [[ -n "$1" ]]; then signal="$1"; fi
+local graceful=1
+local timeout=3000
 
+local arg_n arg_m arg_c arg_f arg_t
+zparseopts -D -- n=arg_n m=arg_m c=arg_c f=arg_f t:=arg_t
+(( $#arg_n )) && sort_by="name"
+(( $#arg_m )) && sort_by="mem"
+(( $#arg_c )) && sort_by="cpu"
+(( $#arg_f )) && graceful=0
+if (( $#arg_t )); then
+  timeout="${arg_t[2]}"
+  if [[ ! "$timeout" =~ ^[1-9][0-9]*$ ]]; then
+    echo "fzk: invalid timeout '$timeout'" >&2
+    return 1
+  fi
+fi
+if (( $# )); then
+  echo "fzk: invalid arg '$1'" >&2
+  return 1
+fi
+
+local ps_output
 case "$sort_by" in
-  mem)
-    ps -u $USER -o pid,pcpu,pmem,comm -m \
-      | awk 'NR>1{n=split($4,a,"/"); $4=a[n]; print $1"\t"$2"\t"$3"\t"$4}' \
-      | fzf --header='PID  CPU% MEM% COMMAND' \
-      | awk '{print $1}' | xargs -r kill -$signal
-    ;;
-  cpu)
-    ps -u $USER -o pid,pcpu,pmem,comm -r \
-      | awk 'NR>1{n=split($4,a,"/"); $4=a[n]; print $1"\t"$2"\t"$3"\t"$4}' \
-      | fzf --header='PID  CPU% MEM% COMMAND' \
-      | awk '{print $1}' | xargs -r kill -$signal
-    ;;
-  name)
-    ps -u $USER -o pid,pcpu,pmem,comm \
-      | awk 'NR>1{n=split($4,a,"/"); $4=a[n]; print $1"\t"$2"\t"$3"\t"$4}' \
-      | sort -k4 \
-      | fzf --header='PID  CPU% MEM% COMMAND' \
-      | awk '{print $1}' | xargs -r kill -$signal
-    ;;
+  mem)  ps_output="$(ps -u $USER -o pid,pcpu,pmem,comm -m)"  ;;
+  cpu)  ps_output="$(ps -u $USER -o pid,pcpu,pmem,comm -r)"  ;;
+  name) ps_output="$(ps -u $USER -o pid,pcpu,pmem,comm)"     ;;
 esac
+
+local fzf_args=(--header='PID  CPU% MEM% COMMAND'
+  --preview='ps -p {1} -o pid,ppid,user,pcpu,pmem,etime,command'
+  --preview-window=down:50%:wrap)
+
+local formatted="$(echo "$ps_output" \
+  | awk 'NR>1{n=split($4,a,"/"); $4=a[n]; print $1"\t"$2"\t"$3"\t"$4}')"
+[[ "$sort_by" == "name" ]] && formatted="$(echo "$formatted" | sort -k4)"
+
+local pids=(${(f)"$(echo "$formatted" \
+  | fzf "${fzf_args[@]}" \
+  | awk '{print $1}')"})
+
+(( $#pids == 0 )) && return 0
+
+if (( graceful )); then
+  kill -15 $pids 2>/dev/null
+  local pid
+  for pid in $pids; do
+    local elapsed=0
+    while kill -0 $pid 2>/dev/null && (( elapsed < timeout )); do
+      sleep 0.1
+      elapsed=$(( elapsed + 100 ))
+    done
+    if kill -0 $pid 2>/dev/null; then
+      kill -9 $pid 2>/dev/null
+    fi
+  done
+else
+  kill -9 $pids 2>/dev/null
+fi
