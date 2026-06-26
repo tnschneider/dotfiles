@@ -71,6 +71,7 @@ alias repos="cd ~/Repos"
 alias todo="open https://app.todoist.com/app/project/$DEFAULT_TODOIST_PROJECT"
 alias cloc="cloc --vcs=git ."
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; echo macOS DNS Cache Reset"
+alias nuke="sudo rm -rf"
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='eza -1'
